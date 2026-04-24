@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MicroMate | Student Hustle Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="background-glow"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#">MicroMate</a>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#post">Post Request</a>
+      <a href="#how">How It Works</a>
+      <a href="login.html">Login</a>
+    </nav>
+    <div class="topbar-actions">
+      <a class="btn btn-ghost" href="login.html">Student Login</a>
+      <button id="openRequestBtn" class="btn btn-primary">Post a Request</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Student Side Hustle & Microservice Marketplace</p>
+        <h1>Find campus talent. Launch your hustle. Build your portfolio.</h1>
+        <p>
+          Browse verified student services for design, coding, tutoring, and content work.
+          Fast turnaround, transparent pricing, and secure project handoffs.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#services">Explore Services</a>
+          <button id="quickRequestBtn" class="btn btn-ghost">Need Something Custom?</button>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <h2>Today on MicroMate</h2>
+        <ul>
+          <li><span id="activeSellers">0</span> active student sellers</li>
+          <li><span id="avgPrice">$0</span> average service price</li>
+          <li><span id="avgRating">0.0</span> average rating</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="services" class="section">
+      <div class="section-head">
+        <h2>Marketplace Services</h2>
+        <p>Use filters to find the best fit for your timeline and budget.</p>
+      </div>
+
+      <div class="filters">
+        <label>
+          Search
+          <input id="searchInput" type="text" placeholder="Try: React, UI, Algebra" />
+        </label>
+        <label>
+          Category
+          <select id="categoryFilter">
+            <option value="all">All categories</option>
+            <option value="Development">Development</option>
+            <option value="Design">Design</option>
+            <option value="Tutoring">Tutoring</option>
+            <option value="Content">Content</option>
+            <option value="Marketing">Marketing</option>
+          </select>
+        </label>
+        <label>
+          Max Price ($)
+          <input id="maxPriceFilter" type="number" min="5" step="5" value="120" />
+        </label>
+        <label>
+          Sort by
+          <select id="sortBy">
+            <option value="rating">Top rated</option>
+            <option value="price-low">Price: low to high</option>
+            <option value="price-high">Price: high to low</option>
+            <option value="delivery">Fastest delivery</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="serviceCount" class="service-count"></div>
+      <div id="serviceGrid" class="service-grid"></div>
+    </section>
+
+    <section id="how" class="section steps">
+      <div class="section-head">
+        <h2>How it works</h2>
+      </div>
+      <div class="step-grid">
+        <article>
+          <h3>1. Discover</h3>
+          <p>Filter by category, budget, and speed to find the right student specialist.</p>
+        </article>
+        <article>
+          <h3>2. Connect</h3>
+          <p>Open a service and send a clear request with your deadline and requirements.</p>
+        </article>
+        <article>
+          <h3>3. Deliver</h3>
+          <p>Receive your work, leave a rating, and build your trusted campus network.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <aside id="requestPanel" class="request-panel" aria-hidden="true">
+    <div class="request-header">
+      <h2 id="post">Post a Project Request</h2>
+      <button id="closePanelBtn" class="close-btn" aria-label="Close request form">x</button>
+    </div>
+    <form id="requestForm">
+      <label>
+        Title
+        <input name="title" type="text" required placeholder="Need a responsive landing page" />
+      </label>
+      <label>
+        Category
+        <select name="category" required>
+          <option value="">Choose</option>
+          <option value="Development">Development</option>
+          <option value="Design">Design</option>
+          <option value="Tutoring">Tutoring</option>
+          <option value="Content">Content</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+      </label>
+      <label>
+        Budget ($)
+        <input name="budget" type="number" min="5" step="5" required />
+      </label>
+      <label>
+        Needed by
+        <input name="deadline" type="date" required />
+      </label>
+      <label>
+        Details
+        <textarea name="details" rows="4" placeholder="Explain the scope, preferred tools, and final format"></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary">Publish Request</button>
+      <p id="formMessage" class="form-message"></p>
+    </form>
+  </aside>
+
+  <div id="backdrop" class="backdrop" hidden></div>
+
+  <template id="serviceCardTemplate">
+    <article class="service-card">
+      <header>
+        <span class="tag"></span>
+        <span class="rating"></span>
+      </header>
+      <h3></h3>
+      <p class="description"></p>
+      <ul class="meta"></ul>
+      <footer>
+        <span class="price"></span>
+        <button class="btn btn-secondary">Request Service</button>
+      </footer>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

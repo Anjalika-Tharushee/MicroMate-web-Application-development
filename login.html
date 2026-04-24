@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MicroMate | Student Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <div class="login-bg-shape"></div>
+
+  <header class="login-topbar">
+    <a class="brand" href="index.html">MicroMate</a>
+    <a class="back-link" href="index.html">Back to Marketplace</a>
+  </header>
+
+  <main class="login-main">
+    <section class="login-card" aria-labelledby="loginTitle">
+      <p class="eyebrow">Account Access</p>
+      <h1 id="loginTitle">Welcome Back</h1>
+      <p class="subtitle">Choose your role and log in to continue on MicroMate.</p>
+
+      <div class="role-switch" role="tablist" aria-label="Select account type">
+        <button type="button" class="role-btn active" data-role="customer" aria-pressed="true">Customer</button>
+        <button type="button" class="role-btn" data-role="developer" aria-pressed="false">Developer</button>
+      </div>
+      <p id="roleHint" class="role-hint">Customers can request services and track orders.</p>
+
+      <form id="loginForm" novalidate>
+        <input id="accountType" name="accountType" type="hidden" value="customer" />
+
+        <label id="emailLabel" for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" required />
+
+        <label for="password">Password</label>
+        <div class="password-wrap">
+          <input id="password" name="password" type="password" minlength="6" placeholder="Enter your password" required />
+          <button id="togglePassword" type="button" class="text-btn" aria-label="Show password">Show</button>
+        </div>
+
+        <div class="row">
+          <label class="inline-label" for="rememberMe">
+            <input id="rememberMe" name="rememberMe" type="checkbox" />
+            Remember me
+          </label>
+        </div>
+
+        <button id="submitBtn" type="submit" class="btn-primary">Login as Customer</button>
+        <p id="loginMessage" class="message" aria-live="polite"></p>
+      </form>
+
+      <p class="signup">
+        New here?
+        <a href="signup.html">Create an account</a>
+      </p>
+    </section>
+
+    <aside class="benefits-card">
+      <h2>Why login to MicroMate?</h2>
+      <ul>
+        <li>Track your ongoing projects in one dashboard</li>
+        <li>Chat directly with verified student sellers</li>
+        <li>Save favorite services and compare offers</li>
+        <li>Receive updates on deadlines and deliveries</li>
+      </ul>
+    </aside>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>
