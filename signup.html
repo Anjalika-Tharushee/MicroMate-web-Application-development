@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MicroMate | Create Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="signup.css" />
+</head>
+<body>
+  <div class="signup-bg-shape"></div>
+
+  <header class="signup-topbar">
+    <a class="brand" href="index.html">MicroMate</a>
+    <a class="back-link" href="login.html">Back to Login</a>
+  </header>
+
+  <main class="signup-main">
+    <section class="signup-card" aria-labelledby="signupTitle">
+      <p class="eyebrow">New Account</p>
+      <h1 id="signupTitle">Create Your Account</h1>
+      <p class="subtitle">Register as a customer or developer to access MicroMate.</p>
+
+      <div class="role-switch" role="tablist" aria-label="Select account type">
+        <button type="button" class="role-btn active" data-role="customer" aria-pressed="true">Customer</button>
+        <button type="button" class="role-btn" data-role="developer" aria-pressed="false">Developer</button>
+      </div>
+      <p id="roleHint" class="role-hint">Customers can request services and manage orders.</p>
+
+      <form id="signupForm" novalidate>
+        <input id="accountType" name="accountType" type="hidden" value="customer" />
+
+        <label for="fullName">Full Name</label>
+        <input id="fullName" name="fullName" type="text" placeholder="Your full name" required />
+
+        <label id="emailLabel" for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" required />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" minlength="6" placeholder="At least 6 characters" required />
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" minlength="6" placeholder="Re-enter your password" required />
+
+        <button id="submitBtn" type="submit" class="btn-primary">Create Customer Account</button>
+        <p id="signupMessage" class="message" aria-live="polite"></p>
+      </form>
+
+      <p class="login-text">
+        Already have an account?
+        <a href="login.html">Log in</a>
+      </p>
+    </section>
+
+    <aside class="benefits-card">
+      <h2>What you get</h2>
+      <ul>
+        <li>Secure account access for your role</li>
+        <li>Marketplace activity tracking</li>
+        <li>Quick access to services and requests</li>
+        <li>Role-based experience for customers and developers</li>
+      </ul>
+    </aside>
+  </main>
+
+  <script src="signup.js"></script>
+</body>
+</html>
