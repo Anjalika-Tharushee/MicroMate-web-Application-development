@@ -1,74 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MicroMate | Student Login</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="login.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MicroMate</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <div class="login-bg-shape"></div>
 
-  <header class="login-topbar">
-    <a class="brand" href="index.html">MicroMate</a>
-    <a class="back-link" href="index.html">Back to Marketplace</a>
-  </header>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo.png" alt="MicroMate Logo">
+                <span>MicroMate</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Post Request</a></li>
+                <li><a href="#">How it works</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="#" class="btn btn-outline">Sign in</a>
+                <a href="#" class="btn btn-primary">Get Started</a>
+            </div>
+        </nav>
+    </header>
 
-  <main class="login-main">
-    <section class="login-card" aria-labelledby="loginTitle">
-      <p class="eyebrow">Account Access</p>
-      <h1 id="loginTitle">Welcome Back</h1>
-      <p class="subtitle">Choose your role and log in to continue on MicroMate.</p>
+    <main class="login-container">
+        <div class="login-card">
+            <div class="login-form-section">
+                <h2>Sign in to your account</h2>
+                <p class="subtitle">Don't have an account?</p>
 
-      <div class="role-switch" role="tablist" aria-label="Select account type">
-        <button type="button" class="role-btn active" data-role="customer" aria-pressed="true">Customer</button>
-        <button type="button" class="role-btn" data-role="developer" aria-pressed="false">Developer</button>
-      </div>
-      <p id="roleHint" class="role-hint">Customers can request services and track orders.</p>
+                <form>
+                    <div class="input-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
 
-      <form id="loginForm" novalidate>
-        <input id="accountType" name="accountType" type="hidden" value="customer" />
+                    <div class="input-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
 
-        <label id="emailLabel" for="email">Email</label>
-        <input id="email" name="email" type="email" placeholder="you@example.com" required />
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
 
-        <label for="password">Password</label>
-        <div class="password-wrap">
-          <input id="password" name="password" type="password" minlength="6" placeholder="Enter your password" required />
-          <button id="togglePassword" type="button" class="text-btn" aria-label="Show password">Show</button>
+                    <div class="social-login">
+                        <button type="button" class="social-btn"><img src="google-icon.png" alt="Google"></button>
+                        <button type="button" class="social-btn"><i class="fas fa-envelope"></i></button>
+                    </div>
+
+                    <p class="terms">
+                        By joining, you agree to the Fiverr Terms of Services and to occasionally receive emails from us. Please read our Private Privacy to learn how we use your personal data.
+                    </p>
+                </form>
+            </div>
+
+            <div class="login-visual-section">
+                <div class="visual-content">
+                    <h3>Success starts here</h3>
+                    <ul>
+                        <li>Over 700 categories.</li>
+                        <li>Quality work done faster.</li>
+                        <li>Access to talent and businesses across the globe.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
+    </main>
 
-        <div class="row">
-          <label class="inline-label" for="rememberMe">
-            <input id="rememberMe" name="rememberMe" type="checkbox" />
-            Remember me
-          </label>
-        </div>
-
-        <button id="submitBtn" type="submit" class="btn-primary">Login as Customer</button>
-        <p id="loginMessage" class="message" aria-live="polite"></p>
-      </form>
-
-      <p class="signup">
-        New here?
-        <a href="signup.html">Create an account</a>
-      </p>
-    </section>
-
-    <aside class="benefits-card">
-      <h2>Why login to MicroMate?</h2>
-      <ul>
-        <li>Track your ongoing projects in one dashboard</li>
-        <li>Chat directly with verified student sellers</li>
-        <li>Save favorite services and compare offers</li>
-        <li>Receive updates on deadlines and deliveries</li>
-      </ul>
-    </aside>
-  </main>
-
-  <script src="login.js"></script>
 </body>
 </html>
