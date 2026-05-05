@@ -1,236 +1,303 @@
-:root {
-  --bg: #f5f2e9;
-  --card: #fffef8;
-  --ink: #202124;
-  --muted: #666b73;
-  --line: #d7cfbf;
-  --accent: #0c7a6b;
-  --accent-strong: #086457;
-  --warn: #b33a2e;
-  --ok: #146b5c;
-  --radius: 18px;
-  --shadow: 0 14px 32px rgba(25, 25, 15, 0.14);
-}
-
 * {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 body {
-  min-height: 100vh;
-  font-family: "Sora", sans-serif;
-  color: var(--ink);
-  background: radial-gradient(circle at 8% 12%, #ffefba 0%, transparent 38%),
-    radial-gradient(circle at 90% 0%, #d2f0e9 0%, transparent 40%),
-    var(--bg);
+    background-color: #f8f9fa;
 }
 
-.signup-bg-shape {
-  position: fixed;
-  width: 460px;
-  height: 460px;
-  right: -130px;
-  bottom: -150px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(12, 122, 107, 0.2), transparent 65%);
-  pointer-events: none;
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    border-bottom: 2px solid #007bff;
 }
 
-.signup-topbar,
-.signup-main {
-  position: relative;
-  z-index: 1;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2c5282;
+    font-weight: bold;
 }
 
-.signup-topbar {
-  max-width: 1100px;
-  margin: 20px auto;
-  padding: 12px 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(255, 254, 248, 0.88);
-  backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.logo img {
+    height: 40px;
 }
 
-.brand {
-  font-family: "Space Grotesk", sans-serif;
-  text-decoration: none;
-  color: var(--ink);
-  font-size: 1.25rem;
-  font-weight: 700;
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
 }
 
-.back-link {
-  text-decoration: none;
-  color: var(--muted);
-  font-size: 0.92rem;
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-size: 0.9rem;
 }
 
-.signup-main {
-  max-width: 1100px;
-  margin: 24px auto 50px;
-  padding: 0 12px;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 20px;
-}
-
-.signup-card,
-.benefits-card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: calc(var(--radius) + 6px);
-  box-shadow: var(--shadow);
-  padding: 28px;
-}
-
-.eyebrow {
-  margin: 0;
-  color: var(--accent);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-h1,
-h2 {
-  font-family: "Space Grotesk", sans-serif;
-}
-
-h1 {
-  margin: 10px 0;
-  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
-}
-
-.subtitle {
-  margin-top: 0;
-  color: var(--muted);
-}
-
-.role-switch {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  padding: 6px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #f5f0e2;
-  margin-bottom: 10px;
-}
-
-.role-btn {
-  border: 0;
-  border-radius: 999px;
-  padding: 9px 10px;
-  font-weight: 600;
-  background: transparent;
-  color: #535861;
-  cursor: pointer;
-}
-
-.role-btn.active {
-  background: #fffef8;
-  color: var(--accent-strong);
-  box-shadow: 0 2px 10px rgba(12, 122, 107, 0.14);
-}
-
-.role-hint {
-  margin: 0 0 10px;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-form {
-  display: grid;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-label {
-  font-size: 0.9rem;
-  color: #4e545c;
-}
-
-input {
-  width: 100%;
-  font: inherit;
-  padding: 11px 12px;
-  border: 1px solid #c8c1b1;
-  border-radius: 11px;
-  background: #fffdf7;
-}
-
-input:focus {
-  outline: 2px solid rgba(12, 122, 107, 0.2);
-  border-color: var(--accent);
+.btn {
+    padding: 8px 18px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
 }
 
 .btn-primary {
-  border: 0;
-  border-radius: 999px;
-  cursor: pointer;
-  padding: 11px 16px;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(120deg, var(--accent), #0fa58f);
-  box-shadow: 0 8px 18px rgba(12, 122, 107, 0.32);
-  margin-top: 8px;
+    background-color: #2c5282;
+    color: white;
+}
+
+.btn-outline {
+    border: 1px solid #2c5282;
+    color: #2c5282;
+}
+
+/* Signup Card Specifics */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.login-card {
+    display: flex;
+    background-color: #708ea8;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 40px;
+    overflow: hidden;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.login-form-section {
+    flex: 1.2;
+    padding: 60px;
+}
+
+.login-form-section h2 { font-size: 2rem; margin-bottom: 5px; }
+.subtitle { margin-bottom: 18px; opacity: 0.9; }
+
+.role-switch {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.role-btn {
+    flex: 1;
+    height: 45px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.35);
+    color: white;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.role-btn.active {
+    background: white;
+    color: #2c5282;
+}
+
+.role-hint {
+    margin: 0 0 10px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+form {
+    display: block;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: none;
+    background: white;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 16px 0;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.divider span {
+    padding: 0 15px;
+}
+
+.social-login {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.social-btn {
+    flex: 1;
+    height: 45px;
+    border-radius: 8px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.social-btn img { height: 20px; }
+
+.social-btn i {
+    font-size: 1.1rem;
+    color: #2c5282;
+}
+
+.terms {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    opacity: 0.9;
+    margin-bottom: 16px;
+}
+
+.btn-primary[type="submit"] {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    font-weight: 600;
 }
 
 .message {
-  margin: 2px 0 0;
-  min-height: 20px;
-  font-size: 0.92rem;
+    margin: 10px 0 0;
+    min-height: 20px;
+    font-size: 0.92rem;
 }
 
 .message.error {
-  color: var(--warn);
+    color: #ffd4d4;
 }
 
 .message.success {
-  color: var(--ok);
+    color: #d7ffea;
 }
 
 .login-text {
-  margin-top: 18px;
-  color: var(--muted);
-  font-size: 0.92rem;
+    margin-top: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.92rem;
 }
 
 .login-text a {
-  color: #225f94;
-  text-decoration: none;
+    color: #ffffff;
+    font-weight: 600;
 }
 
-.benefits-card h2 {
-  margin-top: 0;
+.login-visual-section {
+    flex: 1;
+    background: url('images/grad\ with\ sky.jpg') center/cover;
+    position: relative;
+    margin: 20px;
+    border-radius: 30px;
 }
 
-.benefits-card ul {
-  margin: 0;
-  padding-left: 20px;
-  color: #4f555d;
-  display: grid;
-  gap: 10px;
+.visual-content {
+    position: absolute;
+    bottom: 40px;
+    left: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.visual-content h3 { font-size: 1.5rem; margin-bottom: 15px; }
+.visual-content ul { list-style: none; }
+.visual-content ul li::before {
+    content: "•";
+    margin-right: 10px;
+}
+
+.visual-content ul li {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
 }
 
 @media (max-width: 900px) {
-  .signup-main {
-    grid-template-columns: 1fr;
-  }
+    .login-card {
+        flex-direction: column;
+    }
+
+    .login-visual-section {
+        min-height: 320px;
+        margin: 0 20px 20px;
+    }
+}
+
+@media (max-width: 700px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .login-form-section {
+        padding: 32px 24px;
+    }
 }
 
 @media (max-width: 560px) {
-  .signup-card,
-  .benefits-card {
-    padding: 22px;
-  }
+    .login-card {
+        border-radius: 28px;
+    }
+
+    .login-form-section {
+        padding: 24px 18px;
+    }
+
+    .role-switch,
+    .social-login {
+        flex-direction: column;
+    }
+
+    .login-visual-section {
+        margin: 0 12px 12px;
+    }
 }
