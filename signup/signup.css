@@ -1,3 +1,25 @@
+:root {
+    --bg: #f8f9fa;
+    --text: #333333;
+    --text-on-card: #ffffff;
+    --primary: #2c5282;
+    --navbar-border: #007bff;
+    --card-bg: #708ea8;
+    --input-bg: #ffffff;
+    --border: #cbd5e0;
+}
+
+html[data-theme="dark"] {
+    --bg: #0f172a;
+    --text: #e2e8f0;
+    --text-on-card: #f1f5f9;
+    --primary: #60a5fa;
+    --navbar-border: #3b82f6;
+    --card-bg: #1e3a5f;
+    --input-bg: #e2e8f0;
+    --border: #334155;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +28,9 @@
 }
 
 body {
-    background-color: #f8f9fa;
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Navbar */
@@ -15,14 +39,14 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 5%;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid var(--navbar-border);
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #2c5282;
+    color: var(--primary);
     font-weight: bold;
 }
 
@@ -38,8 +62,40 @@ body {
 
 .nav-links a {
     text-decoration: none;
-    color: #333;
+    color: var(--text);
     font-size: 0.9rem;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background-color: transparent;
+    color: var(--text);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.theme-toggle .sun-icon {
+    display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .moon-icon {
+    display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .sun-icon {
+    display: inline-block;
 }
 
 .btn {
@@ -50,13 +106,13 @@ body {
 }
 
 .btn-primary {
-    background-color: #2c5282;
+    background-color: var(--primary);
     color: white;
 }
 
 .btn-outline {
-    border: 1px solid #2c5282;
-    color: #2c5282;
+    border: 1px solid var(--primary);
+    color: var(--primary);
 }
 
 /* Signup Card Specifics */
@@ -70,12 +126,12 @@ body {
 
 .login-card {
     display: flex;
-    background-color: #708ea8;
+    background-color: var(--card-bg);
     width: 100%;
     max-width: 900px;
     border-radius: 40px;
     overflow: hidden;
-    color: white;
+    color: var(--text-on-card);
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
@@ -106,8 +162,8 @@ body {
 }
 
 .role-btn.active {
-    background: white;
-    color: #2c5282;
+    background: var(--input-bg);
+    color: var(--primary);
 }
 
 .role-hint {
@@ -135,7 +191,8 @@ form {
     padding: 12px 15px;
     border-radius: 10px;
     border: none;
-    background: white;
+    background: var(--input-bg);
+    color: #0f172a;
 }
 
 .divider {
@@ -166,7 +223,7 @@ form {
     height: 45px;
     border-radius: 8px;
     border: none;
-    background: white;
+    background: var(--input-bg);
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -178,7 +235,7 @@ form {
 
 .social-btn i {
     font-size: 1.1rem;
-    color: #2c5282;
+    color: var(--primary);
 }
 
 .terms {

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post Request - MicroMate</title>
+    <script>
+        (function () {
+            try {
+                var savedTheme = localStorage.getItem("micromateTheme");
+                if (savedTheme === "light" || savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", savedTheme);
+                }
+            } catch (error) {
+                // Ignore localStorage access issues in private browsing contexts.
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="post-request.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo.png" alt="MicroMate Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="post-request.html" class="active">Post Request</a></li>
+                <li><a href="#how-it-works">How it works</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <button type="button" class="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
+                    <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
+                    <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Sign in</a>
+                <a href="signup.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="page-shell">
+        <section class="page-hero">
+            <div>
+                <p class="eyebrow">Post a request</p>
+                <h1>Describe the work you need and get matched fast.</h1>
+                <p class="hero-copy">Create a clear request for design, coding, tutoring, writing, or campus help. Keep it short, specific, and easy for students to respond to.</p>
+            </div>
+            <div class="hero-card">
+                <div>
+                    <span>Average response</span>
+                    <strong>Under 2 hours</strong>
+                </div>
+                <div>
+                    <span>Top categories</span>
+                    <strong>Design, Dev, Content</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="request-layout">
+            <form id="postRequestForm" class="request-form" novalidate>
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="requestTitle">Request title</label>
+                        <input id="requestTitle" name="requestTitle" type="text" placeholder="Need a React landing page" required />
+                    </div>
+                    <div class="field">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required>
+                            <option value="">Choose category</option>
+                            <option>Development</option>
+                            <option>Design</option>
+                            <option>Tutoring</option>
+                            <option>Content</option>
+                            <option>Marketing</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="budget">Budget ($)</label>
+                        <input id="budget" name="budget" type="number" min="1" step="1" placeholder="75" required />
+                    </div>
+                    <div class="field">
+                        <label for="deadline">Deadline</label>
+                        <input id="deadline" name="deadline" type="date" required />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="details">Project details</label>
+                    <textarea id="details" name="details" rows="7" maxlength="500" placeholder="Describe what you need, what files or examples you have, and any special requirements." required></textarea>
+                    <div class="field-meta">
+                        <span id="detailCount">0/500</span>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="contactName">Your name</label>
+                        <input id="contactName" name="contactName" type="text" placeholder="Anjal" required />
+                    </div>
+                    <div class="field">
+                        <label for="contactEmail">Contact email</label>
+                        <input id="contactEmail" name="contactEmail" type="email" placeholder="you@example.com" required />
+                    </div>
+                </div>
+
+                <div class="field toggle-row">
+                    <label class="checkbox-row" for="urgent">
+                        <input id="urgent" name="urgent" type="checkbox" />
+                        <span>Mark as urgent</span>
+                    </label>
+                    <label class="checkbox-row" for="allowMessages">
+                        <input id="allowMessages" name="allowMessages" type="checkbox" checked />
+                        <span>Allow sellers to message me</span>
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary submit-btn">Post Request</button>
+                    <a href="index.html" class="btn btn-outline">Cancel</a>
+                </div>
+
+                <p id="requestMessage" class="message" aria-live="polite"></p>
+            </form>
+
+            <aside class="preview-card">
+                <p class="preview-label">Preview</p>
+                <h2 id="previewTitle">Need a React landing page</h2>
+                <p id="previewCategory" class="preview-meta">Development</p>
+                <p id="previewDetails">Tell sellers exactly what you need, your target audience, and the deadline.</p>
+                <ul class="preview-list">
+                    <li><strong>Budget:</strong> <span id="previewBudget">$75</span></li>
+                    <li><strong>Deadline:</strong> <span id="previewDeadline">Select a date</span></li>
+                    <li><strong>Contact:</strong> <span id="previewContact">you@example.com</span></li>
+                </ul>
+            </aside>
+        </section>
+
+        <section id="how-it-works" class="info-strip">
+            <div>
+                <h3>How it works</h3>
+                <p>Write a clear request, post it, and browse replies from students who match your category and budget.</p>
+            </div>
+            <div id="contact">
+                <h3>Need help?</h3>
+                <p>Email support@micromate.local or use the Contact Us link above.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="theme.js"></script>
+    <script src="post-request.js"></script>
+</body>
+</html>
