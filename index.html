@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MicroMate - Find Campus Talent</title>
+    <script>
+        (function () {
+            try {
+                var savedTheme = localStorage.getItem("micromateTheme");
+                if (savedTheme === "light" || savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", savedTheme);
+                }
+            } catch (error) {
+                // Ignore localStorage access issues in private browsing contexts.
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -15,13 +27,17 @@
                 <img src="images/logo.png" alt="MicroMate Logo">
             </div>
             <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Post Request</a></li>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="post-request.html">Post Request</a></li>
                 <li><a href="#">How it works</a></li>
                 <li><a href="#">Contact Us</a></li>
             </ul>
             <div class="nav-buttons">
+                <button type="button" class="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
+                    <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
+                    <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
+                </button>
                 <a href="login.html" class="btn btn-outline">Sign in</a>
                 <a href="signup.html" class="btn btn-primary">Get Started</a>
             </div>
@@ -67,5 +83,6 @@
         </section>
     </main>
 
+    <script src="theme.js"></script>
 </body>
 </html>

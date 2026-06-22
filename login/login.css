@@ -1,0 +1,308 @@
+:root {
+    --bg: #f8f9fa;
+    --text: #333333;
+    --text-on-card: #ffffff;
+    --primary: #2c5282;
+    --navbar-border: #007bff;
+    --card-bg: #708ea8;
+    --input-bg: #ffffff;
+    --border: #cbd5e0;
+}
+
+html[data-theme="dark"] {
+    --bg: #0f172a;
+    --text: #e2e8f0;
+    --text-on-card: #f1f5f9;
+    --primary: #60a5fa;
+    --navbar-border: #3b82f6;
+    --card-bg: #1e3a5f;
+    --input-bg: #e2e8f0;
+    --border: #334155;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    border-bottom: 2px solid var(--navbar-border);
+}
+
+
+.logo { display: flex; align-items: center; gap: 10px; color: var(--primary); font-weight: bold; }
+.logo img { height: 40px; }
+.nav-links { display: flex; list-style: none; gap: 10px; }
+.nav-links a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+    border-color: var(--border);
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.nav-links a.active {
+    color: white;
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.nav-buttons { display: flex; gap: 10px; align-items: center; }
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background-color: transparent;
+    color: var(--text);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.theme-toggle .sun-icon {
+    display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .moon-icon {
+    display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .sun-icon {
+    display: inline-block;
+}
+
+.btn { padding: 8px 18px; border-radius: 5px; text-decoration: none; font-size: 0.9rem; }
+.btn-primary { background-color: var(--primary); color: white; }
+.btn-outline { border: 1px solid var(--primary); color: var(--primary); }
+
+/* Login Card Specifics */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.login-card {
+    display: flex;
+    background-color: var(--card-bg);
+    width: 100%;
+    max-width: 900px;
+    border-radius: 40px;
+    overflow: hidden;
+    color: var(--text-on-card);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.login-form-section {
+    flex: 1.2;
+    padding: 60px;
+}
+
+.login-form-section h2 { font-size: 2rem; margin-bottom: 5px; }
+.subtitle { margin-bottom: 30px; opacity: 0.9; }
+.subtitle a { color: #ffffff; font-weight: 600; }
+
+.role-switch {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.role-btn {
+    flex: 1;
+    height: 44px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.role-btn.active {
+    background: #ffffff;
+    color: var(--primary);
+}
+
+.role-hint {
+    margin: 0 0 16px;
+    font-size: 0.9rem;
+    opacity: 0.92;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: none;
+    background: var(--input-bg);
+    color: #0f172a;
+}
+
+.password-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-password {
+    min-width: 68px;
+    height: 42px;
+    border-radius: 10px;
+    border: none;
+    background: #ffffff;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.remember-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 2px 0 14px;
+    font-size: 0.92rem;
+}
+
+/* Divider with lines */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.divider span {
+    padding: 0 15px;
+}
+
+.social-login {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.social-btn {
+    flex: 1;
+    height: 45px;
+    border-radius: 8px;
+    border: none;
+    background: var(--input-bg);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.social-btn img { height: 20px; }
+
+.social-btn i {
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+
+.terms {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+.login-submit {
+    width: 100%;
+    border: none;
+    margin-top: 16px;
+    padding: 12px 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.message {
+    margin: 12px 0 0;
+    min-height: 20px;
+    font-size: 0.92rem;
+}
+
+.message.error {
+    color: #ffd4d4;
+}
+
+.message.success {
+    color: #d7ffea;
+}
+
+/* Right Side Styling */
+.login-visual-section {
+    flex: 1;
+    background: url('images/grad\ with\ sky.jpg') center/cover; /* Replace with your image */
+    position: relative;
+    margin: 20px;
+    border-radius: 30px;
+}
+
+.visual-content {
+    position: absolute;
+    bottom: 40px;
+    left: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.2); /* Slight overlay for text readability */
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.visual-content h3 { font-size: 1.5rem; margin-bottom: 15px; }
+.visual-content ul { list-style: none; }
+.visual-content ul li::before {
+    content: "•";
+    margin-right: 10px;
+}
+.visual-content ul li {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
