@@ -126,7 +126,7 @@ signupForm.addEventListener("submit", (event) => {
   showMessage("Account created successfully. Redirecting to login...", "success");
 
   setTimeout(() => {
-    window.location.href = `login.html?role=${role}&email=${encodeURIComponent(email)}`;
+    window.location.href = `../login/login.html?role=${role}&email=${encodeURIComponent(email)}`;
   }, 1000);
 });
 

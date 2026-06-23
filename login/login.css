@@ -280,7 +280,7 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
 /* Right Side Styling */
 .login-visual-section {
     flex: 1;
-    background: url('images/grad\ with\ sky.jpg') center/cover; /* Replace with your image */
+    background: url('../images/grad with sky.jpg') center/cover;
     position: relative;
     margin: 20px;
     border-radius: 30px;

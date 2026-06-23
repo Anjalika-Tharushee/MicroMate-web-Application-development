@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Options - MicroMate</title>
+    <script>
+        (function () {
+            try {
+                var savedTheme = localStorage.getItem("micromateTheme");
+                if (savedTheme === "light" || savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", savedTheme);
+                }
+            } catch (error) {
+                // Ignore localStorage access issues in private browsing contexts.
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="options.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo.png" alt="MicroMate Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login/login.html">Login</a></li>
+                <li><a href="post-request/post-request.html">Post Request</a></li>
+                <li><a href="how-it-works.html">How it works</a></li>
+                <li><a href="options.html" class="active">Options</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <button type="button" class="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
+                    <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
+                    <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
+                </button>
+                <a href="login/login.html" class="btn btn-outline">Sign in</a>
+                <a href="signup/signup.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="options-hero">
+            <p class="eyebrow">Options</p>
+            <h1>Choose the kind of help you need and move faster from idea to finished work.</h1>
+            <p>Browse the main service types supported on MicroMate. Each option is built for quick matching, clear requests, and smooth collaboration with students who know the work.</p>
+        </section>
+
+        <section class="options-grid" aria-label="Service options">
+            <article class="option-card" data-category="Development">
+                <div class="option-icon"><i class="fas fa-code"></i></div>
+                <h2>Coding</h2>
+                <p>Front-end, back-end, bugs, APIs, landing pages, and small builds for apps and websites.</p>
+                <a href="post-request/post-request.html?category=Development" class="btn btn-outline">Post a coding request</a>
+            </article>
+            <article class="option-card" data-category="Content">
+                <div class="option-icon"><i class="fas fa-pen-nib"></i></div>
+                <h2>Writing</h2>
+                <p>Blog posts, copywriting, editing, summaries, research help, and polished student content.</p>
+                <a href="post-request/post-request.html?category=Content" class="btn btn-outline">Post a writing request</a>
+            </article>
+            <article class="option-card" data-category="Design">
+                <div class="option-icon"><i class="fas fa-camera"></i></div>
+                <h2>Photography</h2>
+                <p>Event shoots, portraits, product shots, editing, and campus content capture.</p>
+                <a href="post-request/post-request.html?category=Design" class="btn btn-outline">Post a photography request</a>
+            </article>
+            <article class="option-card" data-category="Content">
+                <div class="option-icon"><i class="fas fa-video"></i></div>
+                <h2>Video Editing</h2>
+                <p>Reels, short-form videos, promo edits, cuts, motion polish, and social-ready clips.</p>
+                <a href="post-request/post-request.html?category=Content" class="btn btn-outline">Post a video request</a>
+            </article>
+            <article class="option-card" data-category="Tutoring">
+                <div class="option-icon"><i class="fas fa-chalkboard-user"></i></div>
+                <h2>Tutoring</h2>
+                <p>One-on-one help for school subjects, exam prep, concept refreshers, and study planning.</p>
+                <a href="post-request/post-request.html?category=Tutoring" class="btn btn-outline">Post a tutoring request</a>
+            </article>
+            <article class="option-card" data-category="Design">
+                <div class="option-icon"><i class="fas fa-drafting-compass"></i></div>
+                <h2>Designing</h2>
+                <p>Logos, social graphics, posters, UI mockups, branding, and clean visual assets.</p>
+                <a href="post-request/post-request.html?category=Design" class="btn btn-outline">Post a design request</a>
+            </article>
+        </section>
+
+        <section class="options-footer" id="contact">
+            <div class="footer-panel">
+                <div>
+                    <h2>Not sure which option fits?</h2>
+                    <p>Start with the closest category and describe the task in your request. You can always mention extra details so the right student responds.</p>
+                </div>
+                <div class="footer-actions">
+                    <a href="post-request/post-request.html" class="btn btn-primary">Post Request</a>
+                    <a href="how-it-works.html" class="btn btn-outline">How it works</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="theme.js"></script>
+    <script src="options.js"></script>
+</body>
+</html>
