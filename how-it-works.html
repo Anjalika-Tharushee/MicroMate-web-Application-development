@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How it works - MicroMate</title>
+    <script>
+        (function () {
+            try {
+                var savedTheme = localStorage.getItem("micromateTheme");
+                if (savedTheme === "light" || savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", savedTheme);
+                }
+            } catch (error) {
+                // Ignore localStorage access issues in private browsing contexts.
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: radial-gradient(circle at top, rgba(44, 82, 130, 0.1), transparent 36%), var(--bg);
+        }
+
+        .how-hero {
+            padding: 4.5rem 5% 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .how-hero h1 {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            line-height: 1.04;
+            max-width: 820px;
+            margin-bottom: 1rem;
+        }
+
+        .how-hero p {
+            max-width: 760px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1.02rem;
+        }
+
+        .how-steps {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 5% 4rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            min-height: 220px;
+        }
+
+        html[data-theme="dark"] .step-card {
+            background: rgba(15, 23, 42, 0.78);
+        }
+
+        .step-number {
+            width: 46px;
+            height: 46px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .step-card h2 {
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+        }
+
+        .step-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .how-cta {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 5%;
+        }
+
+        .cta-panel {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: center;
+            padding: 28px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(44, 82, 130, 0.14), rgba(96, 165, 250, 0.12));
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .cta-panel h2 {
+            margin-bottom: 8px;
+        }
+
+        .cta-panel p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 680px;
+        }
+
+        .how-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 900px) {
+            .how-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-panel {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo.png" alt="MicroMate Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login/login.html">Login</a></li>
+                <li><a href="post-request/post-request.html">Post Request</a></li>
+                <li><a href="how-it-works.html" class="active">How it works</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <button type="button" class="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
+                    <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
+                    <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
+                </button>
+                <a href="login/login.html" class="btn btn-outline">Sign in</a>
+                <a href="signup/signup.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="how-hero">
+            <p class="eyebrow">How it works</p>
+            <h1>Post a request, connect with campus talent, and get the work moving fast.</h1>
+            <p>MicroMate keeps the process simple: describe what you need, let students respond, and choose the best fit for your budget and timeline. The same flow works for design, coding, tutoring, writing, and campus support.</p>
+        </section>
+
+        <section class="how-steps" aria-label="How MicroMate works">
+            <article class="step-card">
+                <div class="step-number">1</div>
+                <h2>Create your request</h2>
+                <p>Share a title, category, budget, deadline, and a short description of the task. Clear requests attract better replies.</p>
+            </article>
+            <article class="step-card">
+                <div class="step-number">2</div>
+                <h2>Review responses</h2>
+                <p>Students can reach out with their approach, experience, and expected turnaround. Compare quality, fit, and speed before deciding.</p>
+            </article>
+            <article class="step-card">
+                <div class="step-number">3</div>
+                <h2>Choose and collaborate</h2>
+                <p>Select the best match, align on the details, and keep the project moving with clear communication and agreed milestones.</p>
+            </article>
+        </section>
+
+        <section class="how-cta">
+            <div class="cta-panel">
+                <div>
+                    <h2>Ready to post your first request?</h2>
+                    <p>Start with a simple brief and let the right students come to you. If you need a reference, the post request page already shows the structure.</p>
+                </div>
+                <div class="how-actions">
+                    <a href="post-request/post-request.html" class="btn btn-primary">Post Request</a>
+                    <a href="index.html" class="btn btn-outline">Back to Home</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="how-hero" style="padding-top: 0;">
+            <p class="eyebrow">Need help?</p>
+            <h1 style="font-size: clamp(1.6rem, 3vw, 2.4rem); max-width: 700px;">Questions about a request or account setup?</h1>
+            <p>Email support@micromate.local and we’ll point you to the right part of the flow.</p>
+        </section>
+    </main>
+
+    <script src="theme.js"></script>
+</body>
+</html>

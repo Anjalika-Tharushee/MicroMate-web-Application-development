@@ -280,7 +280,7 @@ form {
 
 .login-visual-section {
     flex: 1;
-    background: url('images/grad\ with\ sky.jpg') center/cover;
+    background: url('../images/grad with sky.jpg') center/cover;
     position: relative;
     margin: 20px;
     border-radius: 30px;

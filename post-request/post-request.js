@@ -69,6 +69,12 @@ function updatePreview() {
 detailsInput.addEventListener("input", updatePreview);
 updatePreview();
 
+const categoryQuery = new URLSearchParams(window.location.search).get("category");
+if (categoryQuery) {
+  categoryInput.value = categoryQuery;
+  updatePreview();
+}
+
 postRequestForm.addEventListener("submit", (event) => {
   event.preventDefault();
 

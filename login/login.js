@@ -110,7 +110,7 @@ loginForm.addEventListener("submit", (event) => {
   const roleLabel = role === "developer" ? "Developer" : "Customer";
   showMessage(`${roleLabel} login successful. Redirecting to marketplace...`, "success");
   setTimeout(() => {
-    window.location.href = `index.html?role=${role}`;
+    window.location.href = `../index.html?role=${role}`;
   }, 1000);
 });
 
