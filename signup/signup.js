@@ -26,6 +26,38 @@ if (signupForm) {
     const email = signupForm.email.value.trim();
     const password = signupForm.password.value;
     const confirmPassword = signupForm.confirmPassword.value;
+
+  //logic for role selection
+const accountTypeInput = document.getElementById("accountType");
+const roleBtns = document.querySelectorAll(".role-btn");
+const roleHint = document.getElementById("roleHint");
+const submitBtn = document.getElementById("submitBtn");
+
+roleBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+  
+    roleBtns.forEach((b) => {
+      b.classList.remove("active");
+      b.setAttribute("aria-pressed", "false");
+    });
+
+    btn.classList.add("active");
+    btn.setAttribute("aria-pressed", "true");
+
+    
+    const selectedRole = btn.getAttribute("data-role");
+    accountTypeInput.value = selectedRole;
+
+  
+    if (selectedRole === "customer") {
+      roleHint.textContent = "Customers can request services and manage orders.";
+      submitBtn.textContent = "Create Customer Account";
+    } else {
+      roleHint.textContent = "Developers can offer services and view customer requests.";
+      submitBtn.textContent = "Create Developer Account";
+    }
+  });
+});
     
     //  get (customer/developer) 
     const role = document.getElementById("accountType").value; 
