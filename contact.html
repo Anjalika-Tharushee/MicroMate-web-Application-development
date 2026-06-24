@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - MicroMate</title>
+    <script>
+        // Apply theme before page rendering
+        (function () {
+            try {
+                var savedTheme = localStorage.getItem("micromateTheme");
+                if (savedTheme === "light" || savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", savedTheme);
+                }
+            } catch (error) {
+                // Ignore localStorage issues
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: radial-gradient(circle at top, rgba(44, 82, 130, 0.1), transparent 36%), var(--bg);
+        }
+        .contact-container {
+            max-width: 800px;
+            margin: 6rem auto 4rem;
+            padding: 0 5%;
+        }
+        .contact-card {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+        }
+        html[data-theme="dark"] .contact-card {
+            background: rgba(15, 23, 42, 0.78);
+        }
+        .contact-card h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .contact-card p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .input-group label {
+            font-weight: 500;
+        }
+        .input-group input, .input-group textarea {
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--input-bg, #fff);
+            color: var(--text);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        html[data-theme="dark"] .input-group input, html[data-theme="dark"] .input-group textarea {
+            background: #1e293b;
+        }
+        .input-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .message {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo.png" alt="MicroMate Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="post-request/post-request.html">Post Request</a></li>
+                <li><a href="how-it-works.html">How it works</a></li>
+                <li><a href="options.html">Options</a></li>
+                <li><a href="contact.html" class="active">Contact Us</a></li>
+            </ul>
+            
+        </nav>
+    </header>
+
+    <main class="contact-container">
+        <div class="contact-card">
+            <h1>Contact Us</h1>
+            <p>Have questions or need assistance? Drop us a message below.</p>
+            
+            <form id="contactForm">
+                <div class="input-group">
+                    <label for="contactName">Name:</label>
+                    <input type="text" id="contactName" required placeholder="Your full name">
+                </div>
+                <div class="input-group">
+                    <label for="contactEmail">Email:</label>
+                    <input type="email" id="contactEmail" required placeholder="your@example.com">
+                </div>
+                <div class="input-group">
+                    <label for="contactMessage">Message:</label>
+                    <textarea id="contactMessage" required placeholder="Type your message here..."></textarea>
+                </div>
+                <button type="submit" id="contactSubmitBtn" class="btn-primary" style="width: 100%; padding: 14px; border-radius: 12px; font-weight: 600;">Send Message</button>
+                <p id="contactStatusMessage" class="message"></p>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="auth-status.js"></script>
+    <script src="contact.js"></script>
+</body>
+</html>

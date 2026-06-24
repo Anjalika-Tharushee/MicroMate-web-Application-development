@@ -38,6 +38,25 @@
     </header>
 
     <main>
+        <section class="messages-section" style="max-width: 1000px; margin: 4rem auto; padding: 0 5%;">
+              <h2>Customer Inquiries & Messages</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Below are the messages submitted by customers via the Contact Us page.</p>
+    
+               <div id="loadingStatus" style="font-weight: 500; color: orange; margin-bottom: 10px;">Loading messages...</div>
+
+                 <table id="messagesTable" style="width: 100%; border-collapse: collapse; display: none; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden;">
+                   <thead>
+                     <tr style="background: var(--primary); color: white; text-align: left;">
+                        <th style="padding: 12px;">Name</th>
+                       <th style="padding: 12px;">Email</th>
+                       <th style="padding: 12px;">Message</th>
+                       <th style="padding: 12px;">Received Date</th>
+                     </tr>
+                   </thead>
+                  <tbody id="messagesTableBody">
+                 </tbody>
+               </table>
+        </section>
         <section class="options-hero">
             <p class="eyebrow">Options</p>
             <h1>Choose the kind of help you need and move faster from idea to finished work.</h1>
@@ -102,6 +121,13 @@
 
     <script src="theme.js"></script>
     <script src="app.js"></script>
-</body>
+
+   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script src="auth-status.js"></script>
+
+    <script src="view-messages.js"></script>
 </body>
 </html>
