@@ -18,7 +18,44 @@ const db = firebase.firestore();
 // HTML Elements
 const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");
+const accountTypeInput = document.getElementById("accountType");
+const roleBtns = document.querySelectorAll(".role-btn");
+const roleHint = document.getElementById("roleHint");
+const submitBtn = document.getElementById("submitBtn");
 const googleBtn = document.getElementById("googleBtn");
+
+// customer developer logic 
+if (roleBtns.length > 0) {
+  roleBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // Remove active class from all role buttons
+      roleBtns.forEach((b) => {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+      });
+
+      // Add active class to the clicked button
+      btn.classList.add("active");
+      btn.setAttribute("aria-pressed", "true");
+
+      // Update hidden input value ('customer' or 'developer')
+      const selectedRole = btn.getAttribute("data-role");
+      if (accountTypeInput) {
+        accountTypeInput.value = selectedRole;
+      }
+
+      // Update helper text and action button name dynamically
+      if (selectedRole === "customer") {
+        if (roleHint) roleHint.textContent = "Customers can request services and track orders.";
+        if (submitBtn) submitBtn.textContent = "Login as Customer";
+      } else {
+        if (roleHint) roleHint.textContent = "Developers can offer services and view customer requests.";
+        if (submitBtn) submitBtn.textContent = "Login as Developer";
+      }
+    });
+  });
+}
+
 
 // Form Submit - Email & Password Sign In
 if (loginForm) {
