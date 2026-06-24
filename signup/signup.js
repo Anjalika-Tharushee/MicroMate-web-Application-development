@@ -1,133 +1,84 @@
+// 1. Firebase Configuration 
+const firebaseConfig = {
+  apiKey: "AIzaSyDIrpzFWq5SMUaVIhdVC9mV9Uq5ORiIT_k",
+  authDomain: "micromate-25a16.firebaseapp.com",
+  projectId: "micromate-25a16",
+  storageBucket: "micromate-25a16.firebasestorage.app",
+  messagingSenderId: "297225820043",
+  appId: "1:297225820043:web:6f9d5c3d81be425b03818e"
+};
+
+// Firebase Initialize 
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// HTML elements include ID
 const signupForm = document.getElementById("signupForm");
-const fullNameInput = document.getElementById("fullName");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const confirmPasswordInput = document.getElementById("confirmPassword");
 const signupMessage = document.getElementById("signupMessage");
-const roleButtons = document.querySelectorAll(".role-btn");
-const roleHint = document.getElementById("roleHint");
-const accountTypeInput = document.getElementById("accountType");
-const emailLabel = document.getElementById("emailLabel");
-const submitBtn = document.getElementById("submitBtn");
 
-function showMessage(text, type) {
-  signupMessage.textContent = text;
-  signupMessage.classList.remove("error", "success");
-  if (type) {
-    signupMessage.classList.add(type);
-  }
-}
+if (signupForm) {
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-function isEmailValid(email) {
-  return /.+@.+\..+/.test(email);
-}
+    // get input from the form
+    const fullName = signupForm.fullName.value.trim();
+    const email = signupForm.email.value.trim();
+    const password = signupForm.password.value;
+    const confirmPassword = signupForm.confirmPassword.value;
+    
+    //  get (customer/developer) 
+    const role = document.getElementById("accountType").value; 
 
-function isUniversityEmail(email) {
-  return /.+@.+\..+/.test(email) && (email.endsWith(".edu") || email.includes("ac."));
-}
+    // 2. Client-side Validation 
+    if (password !== confirmPassword) {
+      signupMessage.style.color = "red";
+      signupMessage.textContent = "Passwords do not match!";
+      return;
+    }
 
-function getAccounts() {
-  const raw = localStorage.getItem("micromateAccounts");
-  if (!raw) {
-    return [];
-  }
+    if (password.length < 6) {
+      signupMessage.style.color = "red";
+      signupMessage.textContent = "Password should be at least 6 characters.";
+      return;
+    }
 
-  try {
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
+    signupMessage.style.color = "orange";
+    signupMessage.textContent = "Creating account...";
 
-function saveAccounts(accounts) {
-  localStorage.setItem("micromateAccounts", JSON.stringify(accounts));
-}
+    // 3. Firebase Auth create UserWithEmailAndPassword method to create a new user
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
 
-function applyRole(role) {
-  accountTypeInput.value = role;
-
-  roleButtons.forEach((button) => {
-    const isCurrentRole = button.dataset.role === role;
-    button.classList.toggle("active", isCurrentRole);
-    button.setAttribute("aria-pressed", String(isCurrentRole));
+        //  (Name, Role) save the user data in Firestore
+        return db.collection("users").doc(user.uid).set({
+          fullName: fullName,
+          email: email,
+          role: role, // 'customer' හෝ 'developer'
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      })
+      .then(() => {
+        // move to login page after successful signup
+        signupMessage.style.color = "green";
+        signupMessage.textContent = "Account created successfully! Redirecting to login...";
+        signupForm.reset();
+        
+        setTimeout(() => {
+          window.location.href = "../login/login.html"; // Login පිටුවට මාරු කිරීම
+        }, 2000);
+      })
+      .catch((error) => {
+        console.error("Signup Error:", error);
+        signupMessage.style.color = "red";
+        
+        // Display specific error message for email already in use
+        if (error.code === "auth/email-already-in-use") {
+          signupMessage.textContent = "The email address is already in use by another account.";
+        } else {
+          signupMessage.textContent = error.message;
+        }
+      });
   });
-
-  if (role === "developer") {
-    emailLabel.textContent = "Developer Email";
-    emailInput.placeholder = "you@university.edu";
-    roleHint.textContent = "Developers must use a valid university email.";
-    submitBtn.textContent = "Create Developer Account";
-  } else {
-    emailLabel.textContent = "Email";
-    emailInput.placeholder = "you@example.com";
-    roleHint.textContent = "Customers can request services and manage orders.";
-    submitBtn.textContent = "Create Customer Account";
-  }
 }
-
-roleButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    applyRole(button.dataset.role);
-    showMessage("", "");
-  });
-});
-
-signupForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const fullName = fullNameInput.value.trim();
-  const email = emailInput.value.trim().toLowerCase();
-  const password = passwordInput.value;
-  const confirmPassword = confirmPasswordInput.value;
-  const role = accountTypeInput.value;
-
-  if (!fullName) {
-    showMessage("Please enter your full name.", "error");
-    return;
-  }
-
-  if (!isEmailValid(email)) {
-    showMessage("Please enter a valid email address.", "error");
-    return;
-  }
-
-  if (role === "developer" && !isUniversityEmail(email)) {
-    showMessage("Developer accounts require a university email.", "error");
-    return;
-  }
-
-  if (password.length < 6) {
-    showMessage("Password must be at least 6 characters.", "error");
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    showMessage("Passwords do not match.", "error");
-    return;
-  }
-
-  const accounts = getAccounts();
-  const existing = accounts.find((account) => account.email === email && account.role === role);
-
-  if (existing) {
-    showMessage("An account already exists for this email and role.", "error");
-    return;
-  }
-
-  accounts.push({
-    fullName,
-    email,
-    password,
-    role
-  });
-  saveAccounts(accounts);
-
-  showMessage("Account created successfully. Redirecting to login...", "success");
-
-  setTimeout(() => {
-    window.location.href = `../login/login.html?role=${role}&email=${encodeURIComponent(email)}`;
-  }, 1000);
-});
-
-applyRole("customer");

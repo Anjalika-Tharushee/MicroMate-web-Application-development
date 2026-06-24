@@ -1,147 +1,72 @@
+// 1. Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDIrpzFWq5SMUaVIhdVC9mV9Uq5ORiIT_k",
+  authDomain: "micromate-25a16.firebaseapp.com",
+  projectId: "micromate-25a16",
+  storageBucket: "micromate-25a16.firebasestorage.app",
+  messagingSenderId: "297225820043",
+  appId: "1:297225820043:web:6f9d5c3d81be425b03818e"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// HTML Form Elements
 const loginForm = document.getElementById("loginForm");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const rememberMeInput = document.getElementById("rememberMe");
 const loginMessage = document.getElementById("loginMessage");
-const togglePasswordBtn = document.getElementById("togglePassword");
-const roleButtons = document.querySelectorAll(".role-btn");
-const roleHint = document.getElementById("roleHint");
-const accountTypeInput = document.getElementById("accountType");
-const emailLabel = document.getElementById("emailLabel");
-const submitBtn = document.getElementById("submitBtn");
 
-function showMessage(text, type) {
-  loginMessage.textContent = text;
-  loginMessage.classList.remove("error", "success");
-  if (type) {
-    loginMessage.classList.add(type);
-  }
-}
+if (loginForm) {
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault(); // Form එක refresh වීම වැළැක්වීම
 
-function isUniversityEmail(email) {
-  return /.+@.+\..+/.test(email) && (email.endsWith(".edu") || email.includes("ac."));
-}
+    const email = loginForm.email.value.trim();
+    const password = loginForm.password.value;
 
-function isEmailValid(email) {
-  return /.+@.+\..+/.test(email);
-}
-
-function getAccounts() {
-  const raw = localStorage.getItem("micromateAccounts");
-  if (!raw) {
-    return [];
-  }
-
-  try {
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveAccounts(accounts) {
-  localStorage.setItem("micromateAccounts", JSON.stringify(accounts));
-}
-
-function applyRole(role) {
-  accountTypeInput.value = role;
-
-  roleButtons.forEach((button) => {
-    const isCurrentRole = button.dataset.role === role;
-    button.classList.toggle("active", isCurrentRole);
-    button.setAttribute("aria-pressed", String(isCurrentRole));
-  });
-
-  if (role === "developer") {
-    emailLabel.textContent = "Developer Email";
-    emailInput.placeholder = "you@university.edu";
-    roleHint.textContent = "Developers can manage listings, proposals, and deliveries.";
-    submitBtn.textContent = "Login as Developer";
-  } else {
-    emailLabel.textContent = "Email";
-    emailInput.placeholder = "you@example.com";
-    roleHint.textContent = "Customers can request services and track orders.";
-    submitBtn.textContent = "Login as Customer";
-  }
-}
-
-roleButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    applyRole(button.dataset.role);
-    showMessage("", "");
-  });
-});
-
-togglePasswordBtn.addEventListener("click", () => {
-  const isHidden = passwordInput.type === "password";
-  passwordInput.type = isHidden ? "text" : "password";
-  togglePasswordBtn.textContent = isHidden ? "Hide" : "Show";
-});
-
-loginForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const email = emailInput.value.trim();
-  const password = passwordInput.value;
-  const role = accountTypeInput.value;
-
-  if (!isEmailValid(email)) {
-    showMessage("Please enter a valid email address.", "error");
-    return;
-  }
-
-  if (role === "developer" && !isUniversityEmail(email)) {
-    showMessage("Developer login requires a valid university email address.", "error");
-    return;
-  }
-
-  if (password.length < 6) {
-    showMessage("Password must be at least 6 characters.", "error");
-    return;
-  }
-
-  if (rememberMeInput.checked) {
-    localStorage.setItem("micromateRememberedLogin", JSON.stringify({ email, role }));
-  } else {
-    localStorage.removeItem("micromateRememberedLogin");
-  }
-
-  const roleLabel = role === "developer" ? "Developer" : "Customer";
-  showMessage(`${roleLabel} login successful. Redirecting to marketplace...`, "success");
-  setTimeout(() => {
-    window.location.href = `../index.html?role=${role}`;
-  }, 1000);
-});
-
-const remembered = localStorage.getItem("micromateRememberedLogin");
-if (remembered) {
-  try {
-    const parsed = JSON.parse(remembered);
-    if (parsed && parsed.email) {
-      emailInput.value = parsed.email;
-      rememberMeInput.checked = true;
+    if (!email || !password) {
+      loginMessage.style.color = "red";
+      loginMessage.textContent = "Please fill in all fields.";
+      return;
     }
-    if (parsed && parsed.role) {
-      applyRole(parsed.role);
-    }
-  } catch {
-    localStorage.removeItem("micromateRememberedLogin");
-  }
-}
 
-const query = new URLSearchParams(window.location.search);
-const queryRole = query.get("role");
-const queryEmail = query.get("email");
+    loginMessage.style.color = "orange";
+    loginMessage.textContent = "Logging in...";
 
-if (queryRole === "customer" || queryRole === "developer") {
-  applyRole(queryRole);
-}
+    // 2. Firebase Auth මගින් Sign In කිරීම
+    auth.signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
 
-if (queryEmail) {
-  emailInput.value = queryEmail;
-}
+        // 3. Firestore එකෙන් මේ පරිශීලකයාගේ Role එක (Customer/Developer) කියවා ගැනීම
+        return db.collection("users").doc(user.uid).get();
+      })
+      .then((doc) => {
+        if (doc.exists) {
+          const userData = doc.data();
+          
+          loginMessage.style.color = "green";
+          loginMessage.textContent = `Welcome back, ${userData.fullName || 'User'}! Redirecting...`;
 
-if (!remembered) {
-  applyRole("customer");
+          // Home (index.html) එකට පරිශීලකයා පිටත් කිරීම
+          setTimeout(() => {
+            window.location.href = "../index.html"; 
+          }, 1500);
+        } else {
+          loginMessage.style.color = "red";
+          loginMessage.textContent = "User role data not found.";
+        }
+      })
+      .catch((error) => {
+        console.error("Login Error:", error);
+        loginMessage.style.color = "red";
+        
+        // මුලින්ම එකවුන්ට් එකක් හදලා නැත්නම් මේ error එක පෙන්වයි
+        if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
+          loginMessage.textContent = "Invalid email or password. Please try again.";
+        } else {
+          loginMessage.textContent = error.message;
+        }
+      });
+  });
 }
