@@ -9,17 +9,21 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// HTML Form Elements
+// HTML Elements
 const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");
+const googleBtn = document.getElementById("googleBtn");
 
+// Form Submit - Email & Password Sign In
 if (loginForm) {
   loginForm.addEventListener("submit", (e) => {
-    e.preventDefault(); // Form එක refresh වීම වැළැක්වීම
+    e.preventDefault();
 
     const email = loginForm.email.value.trim();
     const password = loginForm.password.value;
@@ -33,24 +37,21 @@ if (loginForm) {
     loginMessage.style.color = "orange";
     loginMessage.textContent = "Logging in...";
 
-    // 2. Firebase Auth මගින් Sign In කිරීම
     auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-
-        // 3. Firestore එකෙන් මේ පරිශීලකයාගේ Role එක (Customer/Developer) කියවා ගැනීම
+        // Fetch user data from the "users" collection
         return db.collection("users").doc(user.uid).get();
       })
       .then((doc) => {
         if (doc.exists) {
           const userData = doc.data();
-          
           loginMessage.style.color = "green";
           loginMessage.textContent = `Welcome back, ${userData.fullName || 'User'}! Redirecting...`;
 
-          // Home (index.html) එකට පරිශීලකයා පිටත් කිරීම
+          // Redirect to home.html since login is now the main landing page (index.html)
           setTimeout(() => {
-            window.location.href = "../index.html"; 
+            window.location.href = "home.html"; 
           }, 1500);
         } else {
           loginMessage.style.color = "red";
@@ -60,8 +61,6 @@ if (loginForm) {
       .catch((error) => {
         console.error("Login Error:", error);
         loginMessage.style.color = "red";
-        
-        // මුලින්ම එකවුන්ට් එකක් හදලා නැත්නම් මේ error එක පෙන්වයි
         if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
           loginMessage.textContent = "Invalid email or password. Please try again.";
         } else {
@@ -71,4 +70,55 @@ if (loginForm) {
   });
 }
 
+// Google Login Logic (Popup Method with Multiple Overlay Request Fix)
+if (googleBtn) {
+  googleBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    
+    // Disable the button to prevent multiple concurrent popup overlay requests
+    googleBtn.disabled = true;
 
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        
+        // Fetch or establish user profile record in Firestore
+        return db.collection("users").doc(user.uid).get().then((doc) => {
+            if (!doc.exists) {
+                // If it's a first-time Google sign-in, default role to 'customer'
+                return db.collection("users").doc(user.uid).set({
+                    fullName: user.displayName,
+                    email: user.email,
+                    role: "customer",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    return db.collection("users").doc(user.uid).get();
+                });
+            }
+            return doc;
+        });
+      })
+      .then((doc) => {
+        if (doc && doc.exists) {
+          loginMessage.style.color = "green";
+          loginMessage.textContent = "Google Login Successful! Redirecting...";
+          
+          // Redirect to home.html after successful Google authentication
+          setTimeout(() => {
+              window.location.href = "home.html"; 
+          }, 1500);
+        }
+      })
+      .catch((error) => {
+        console.error("Google Auth Error:", error);
+        // Re-enable button on error so user can attempt to click again
+        googleBtn.disabled = false;
+        
+        if (error.code !== "auth/popup-closed-by-user") {
+          alert("Google Login failed: " + error.message);
+        }
+      });
+  });
+}

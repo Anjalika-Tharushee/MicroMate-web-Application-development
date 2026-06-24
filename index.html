@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - MicroMate</title>
     <script>
+        // Check and apply the saved theme before the page renders
         (function () {
             try {
                 var savedTheme = localStorage.getItem("micromateTheme");
@@ -16,7 +17,7 @@
             }
         })();
     </script>
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="login/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -24,23 +25,16 @@
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="../images/logo.png" alt="MicroMate Logo">
-                
+                <img src="images/logo.png" alt="MicroMate Logo">
             </div>
-            <ul class="nav-links">
-                <li><a href="home.html">Home</a></li>
-                <li><a href="../post-request/post-request.html">Post Request</a></li>
-                <li><a href="../how-it-works.html">How it works</a></li>
-                <li><a href="../options.html">Options</a></li>
-                <li><a href="#">Contact Us</a></li>
-            </ul>
+            
             <div class="nav-buttons">
                 <button type="button" class="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
                     <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
                     <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
                 </button>
-                <a href="login.html" class="btn btn-outline">Login</a>
-                <a href="../signup/signup.html" class="btn btn-primary">Sign Up</a>
+                <a href="index.html" class="btn btn-outline active">Login</a>
+                <a href="signup/signup.html" class="btn btn-primary">Sign Up</a>
             </div>
         </nav>
     </header>
@@ -49,7 +43,7 @@
         <div class="login-card">
             <div class="login-form-section">
                 <h2>Sign in to your account</h2>
-                <p class="subtitle">Don't have an account? <a href="../signup/signup.html">Create one</a></p>
+                <p class="subtitle">Don't have an account? <a href="signup/signup.html">Create one</a></p>
 
                 <form id="loginForm" novalidate>
                     <input id="accountType" name="accountType" type="hidden" value="customer" />
@@ -82,14 +76,14 @@
                         <span>or</span>
                     </div>
 
-                  <div class="social-login">
-                     <button type="button" id="googleBtn" class="social-btn" aria-label="Continue with Google">
-                       <i class="fa-brands fa-google"></i>
-                     </button>
-                     <button type="button" class="social-btn" aria-label="Continue with email">
-                       <i class="fas fa-envelope"></i>
-                     </button>
-                   </div>
+                    <div class="social-login">
+                       <button type="button" id="googleBtn" class="social-btn" aria-label="Continue with Google">
+                           <i class="fa-brands fa-google"></i>
+                       </button>
+                       <button type="button" class="social-btn" aria-label="Continue with email">
+                           <i class="fas fa-envelope"></i>
+                       </button>
+                     </div>
 
                     <p class="terms">
                         By joining, you agree to the MicroMate Terms of Services and to occasionally receive emails from us. Please read our Private Privacy to learn how we use your personal data.
@@ -117,7 +111,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <script src="../theme.js"></script>
-    <script src="login.js"></script>
+    <script src="theme.js"></script>
+    <script src="login/login.js"></script> 
 </body>
 </html>
