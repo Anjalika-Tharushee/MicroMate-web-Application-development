@@ -87,7 +87,7 @@ roleBtns.forEach((btn) => {
         return db.collection("users").doc(user.uid).set({
           fullName: fullName,
           email: email,
-          role: role, // 'customer' හෝ 'developer'
+          role: role, // 'customer' or'developer'
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
       })
