@@ -1,71 +1,19 @@
-const services = [
-  {
-    id: 1,
-    title: "React Landing Page Build",
-    category: "Development",
-    price: 95,
-    rating: 4.9,
-    deliveryDays: 2,
-    seller: "Ishara P.",
-    description: "Pixel-perfect landing page with responsive sections and reusable components.",
-    skills: ["React", "CSS", "Figma to Code"]
-  },
-  {
-    id: 2,
-    title: "UI/UX Wireframe + Prototype",
-    category: "Design",
-    price: 70,
-    rating: 4.8,
-    deliveryDays: 3,
-    seller: "Nethmi R.",
-    description: "Clean mobile-first wireframes and clickable prototype for your app idea.",
-    skills: ["Figma", "UX", "Design Systems"]
-  },
-  {
-    id: 3,
-    title: "Data Structures Tutoring",
-    category: "Tutoring",
-    price: 25,
-    rating: 4.7,
-    deliveryDays: 1,
-    seller: "Hasindu J.",
-    description: "Focused sessions for linked lists, trees, recursion, and algorithm practice.",
-    skills: ["DSA", "Python", "Problem Solving"]
-  },
-  {
-    id: 4,
-    title: "SEO Blog Writing",
-    category: "Content",
-    price: 40,
-    rating: 4.6,
-    deliveryDays: 2,
-    seller: "Dinithi S.",
-    description: "Search-optimized blog posts with keyword strategy and engaging structure.",
-    skills: ["SEO", "Copywriting", "Research"]
-  },
-  {
-    id: 5,
-    title: "Instagram Campaign Setup",
-    category: "Marketing",
-    price: 60,
-    rating: 4.8,
-    deliveryDays: 3,
-    seller: "Kavin M.",
-    description: "Campaign concept, audience setup, and launch checklist for student startups.",
-    skills: ["Social Media", "Ads", "Analytics"]
-  },
-  {
-    id: 6,
-    title: "Node API Endpoint Fix",
-    category: "Development",
-    price: 55,
-    rating: 4.9,
-    deliveryDays: 1,
-    seller: "Sahan K.",
-    description: "Debug and improve REST API routes with validation and cleaner responses.",
-    skills: ["Node.js", "Express", "Debugging"]
-  }
-];
+// Firebase Configuration 
+const firebaseConfig = {
+  apiKey: "AIzaSyDIrpzFWq5SMUaVIhdVC9mV9Uq5ORiIT_k",
+  authDomain: "micromate-25a16.firebaseapp.com",
+  projectId: "micromate-25a16",
+  storageBucket: "micromate-25a16.firebasestorage.app",
+  messagingSenderId: "297225820043",
+  appId: "1:297225820043:web:6f9d5c3d81be425b03818e"
+};
+
+// Firebase Initialize 
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Array of Store data in DataBase
+let services = [];
 
 const serviceGrid = document.getElementById("serviceGrid");
 const serviceCount = document.getElementById("serviceCount");
@@ -84,14 +32,31 @@ const closePanelBtn = document.getElementById("closePanelBtn");
 const requestForm = document.getElementById("requestForm");
 const formMessage = document.getElementById("formMessage");
 
+// 2. Real-time Database Read Services Data 
+function fetchServices() {
+  db.collection("services").onSnapshot((snapshot) => {
+    services = [];
+    snapshot.forEach((doc) => {
+      services.push({ id: doc.id, ...doc.data() });
+    });
+    
+    updateStats();
+    renderServices();
+  }, (error) => {
+    console.error("Error fetching services: ", error);
+  });
+}
+
 function updateStats() {
   const activeSellers = document.getElementById("activeSellers");
   const avgPrice = document.getElementById("avgPrice");
   const avgRating = document.getElementById("avgRating");
 
+  if (!activeSellers || !avgPrice || !avgRating) return;
+
   const sellerCount = new Set(services.map((service) => service.seller)).size;
-  const price = services.reduce((sum, service) => sum + service.price, 0) / services.length;
-  const rating = services.reduce((sum, service) => sum + service.rating, 0) / services.length;
+  const price = services.length ? services.reduce((sum, service) => sum + service.price, 0) / services.length : 0;
+  const rating = services.length ? services.reduce((sum, service) => sum + service.rating, 0) / services.length : 0;
 
   activeSellers.textContent = String(sellerCount);
   avgPrice.textContent = `$${Math.round(price)}`;
@@ -99,16 +64,16 @@ function updateStats() {
 }
 
 function getFilteredServices() {
-  const query = searchInput.value.trim().toLowerCase();
-  const category = categoryFilter.value;
-  const maxPrice = Number(maxPriceFilter.value || 0);
-  const sort = sortBy.value;
+  const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+  const category = categoryFilter ? categoryFilter.value : "all";
+  const maxPrice = Number(maxPriceFilter ? maxPriceFilter.value : 0);
+  const sort = sortBy ? sortBy.value : "rating";
 
   let result = services.filter((service) => {
     const matchesText =
       service.title.toLowerCase().includes(query) ||
       service.description.toLowerCase().includes(query) ||
-      service.skills.join(" ").toLowerCase().includes(query);
+      (service.skills && service.skills.join(" ").toLowerCase().includes(query));
 
     const matchesCategory = category === "all" || service.category === category;
     const matchesPrice = maxPrice <= 0 || service.price <= maxPrice;
@@ -130,6 +95,8 @@ function getFilteredServices() {
 }
 
 function renderServices() {
+  if (!serviceGrid || !template) return;
+  
   const items = getFilteredServices();
   serviceGrid.innerHTML = "";
 
@@ -137,9 +104,10 @@ function renderServices() {
     const node = template.content.cloneNode(true);
     const card = node.querySelector(".service-card");
 
-    card.style.animationDelay = `${Math.min(index * 40, 220)}ms`;
+    if (card) card.style.animationDelay = `${Math.min(index * 40, 220)}ms`;
+    
     node.querySelector(".tag").textContent = service.category;
-    node.querySelector(".rating").textContent = `⭐ ${service.rating.toFixed(1)}`;
+    node.querySelector(".rating").textContent = `⭐ ${Number(service.rating).toFixed(1)}`;
     node.querySelector("h3").textContent = service.title;
     node.querySelector(".description").textContent = service.description;
     node.querySelector(".price").textContent = `$${service.price}`;
@@ -148,7 +116,7 @@ function renderServices() {
     meta.innerHTML = `
       <li>Seller: ${service.seller}</li>
       <li>Delivery: ${service.deliveryDays} day(s)</li>
-      <li>Skills: ${service.skills.join(", ")}</li>
+      <li>Skills: ${service.skills ? service.skills.join(", ") : ""}</li>
     `;
 
     const button = node.querySelector("button");
@@ -163,40 +131,64 @@ function renderServices() {
     serviceGrid.appendChild(node);
   });
 
-  serviceCount.textContent = `${items.length} service(s) found`;
+  if (serviceCount) serviceCount.textContent = `${items.length} service(s) found`;
 }
 
 function openPanel() {
+  if (!requestPanel || !backdrop) return;
   requestPanel.classList.add("open");
   requestPanel.setAttribute("aria-hidden", "false");
   backdrop.hidden = false;
 }
 
 function closePanel() {
+  if (!requestPanel || !backdrop) return;
   requestPanel.classList.remove("open");
   requestPanel.setAttribute("aria-hidden", "true");
   backdrop.hidden = true;
 }
 
+// Event Listeners
 [searchInput, categoryFilter, maxPriceFilter, sortBy].forEach((element) => {
-  element.addEventListener("input", renderServices);
-  element.addEventListener("change", renderServices);
+  if (element) {
+    element.addEventListener("input", renderServices);
+    element.addEventListener("change", renderServices);
+  }
 });
 
-openRequestBtn.addEventListener("click", openPanel);
-quickRequestBtn.addEventListener("click", openPanel);
-closePanelBtn.addEventListener("click", closePanel);
-backdrop.addEventListener("click", closePanel);
+if (openRequestBtn) openRequestBtn.addEventListener("click", openPanel);
+if (quickRequestBtn) quickRequestBtn.addEventListener("click", openPanel);
+if (closePanelBtn) closePanelBtn.addEventListener("click", closePanel);
+if (backdrop) backdrop.addEventListener("click", closePanel);
 
-requestForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  formMessage.textContent = "Request published! Sellers can now respond to your post.";
-  requestForm.reset();
-  setTimeout(() => {
-    formMessage.textContent = "";
-    closePanel();
-  }, 1500);
-});
+// Request Form it Submit and Save Data to Database
+if (requestForm) {
+  requestForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+    const newRequest = {
+      title: requestForm.title.value,
+      category: requestForm.category.value,
+      budget: Number(requestForm.budget.value),
+      details: requestForm.details.value,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
 
-updateStats();
-renderServices();
+    db.collection("requests").add(newRequest)
+      .then(() => {
+        formMessage.textContent = "Request published! Sellers can now respond to your post.";
+        requestForm.reset();
+        setTimeout(() => {
+          formMessage.textContent = "";
+          closePanel();
+        }, 1500);
+      })
+      .catch((error) => {
+        console.error("Error adding request: ", error);
+        formMessage.textContent = "Something went wrong. Try again.";
+      });
+  });
+}
+
+// Initial Fetch Services Data
+fetchServices();
