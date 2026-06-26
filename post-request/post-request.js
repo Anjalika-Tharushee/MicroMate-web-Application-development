@@ -31,11 +31,10 @@ const previewContact = document.getElementById("previewContact");
 
 let currentUser = null;
 
-// checking if user is logged in or not, and auto-filling the form with user's email and name if logged in
+// Checking if user is logged in or not, and auto-filling the form with user's email and name if logged in
 auth.onAuthStateChanged((user) => {
     if (user) {
         currentUser = user;
-        
         
         if(postRequestForm.contactEmail) {
             postRequestForm.contactEmail.value = user.email;
@@ -50,7 +49,7 @@ auth.onAuthStateChanged((user) => {
         });
 
     } else {
-        // not logged in, redirect to login page
+        // Not logged in, redirect to login page
         alert("Please login first to post a request!");
         window.location.href = "../login/login.html";
     }
@@ -62,7 +61,7 @@ if (postRequestForm) {
         if (previewTitle) previewTitle.textContent = postRequestForm.requestTitle.value || "Need a React landing page";
         if (previewCategory) previewCategory.textContent = postRequestForm.category.value || "Development";
         if (previewDetails) previewDetails.textContent = postRequestForm.details.value || "Tell sellers exactly what you need...";
-        if (previewBudget) previewBudget.textContent = postRequestForm.budget.value ? `$${postRequestForm.budget.value}` : "$75";
+        if (previewBudget) previewBudget.textContent = postRequestForm.budget.value ? `Rs. ${postRequestForm.budget.value}` : "Rs. 7500";
         if (previewDeadline) previewDeadline.textContent = postRequestForm.deadline.value || "Select a date";
         if (previewContact) previewContact.textContent = postRequestForm.contactEmail.value || "you@example.com";
         
@@ -72,7 +71,7 @@ if (postRequestForm) {
         }
     });
 
-    // 
+    // Form Submit Listener
     postRequestForm.addEventListener("submit", (event) => {
         event.preventDefault();
 
@@ -114,19 +113,20 @@ if (postRequestForm) {
             contactEmail: contactEmail,
             isUrgent: urgent,
             allowMessages: allowMessages,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            timestamp: firebase.firestore.FieldValue.serverTimestamp() // 💡 Standardized naming to 'timestamp'
         };
 
-        
+        // 💡 SAVING TO "requests" COLLECTION
         db.collection("requests").add(requestData)
             .then(() => {
                 requestMessage.style.color = "green";
-                requestMessage.textContent = "Request published successfully! Redirecting...";
+                requestMessage.textContent = "Request published successfully! Redirecting to dashboard...";
                 
                 postRequestForm.reset();
 
+                // 💡 FIXED REDIRECT: Redirect back to Customer Dashboard folder matrix root
                 setTimeout(() => {
-                    window.location.href = "../index.html"; // සාර්ථක වූ පසු හෝම් පේජ් එකට යැවීම
+                    window.location.href = "../customer-dashboard.html"; 
                 }, 2000);
             })
             .catch((error) => {

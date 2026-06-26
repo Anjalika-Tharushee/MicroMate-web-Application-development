@@ -1,4 +1,4 @@
-// 1. Firebase Configuration
+// 1. Firebase Configuration Matrix
 const firebaseConfig = {
   apiKey: "AIzaSyDIrpzFWq5SMUaVIhdVC9mV9Uq5ORiIT_k",
   authDomain: "micromate-25a16.firebaseapp.com",
@@ -8,14 +8,14 @@ const firebaseConfig = {
   appId: "1:297225820043:web:6f9d5c3d81be425b03818e"
 };
 
-// Initialize Firebase
+// Initialize Firebase Application Context
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// HTML Elements
+// Capture HTML Document Object Elements
 const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");
 const accountTypeInput = document.getElementById("accountType");
@@ -23,28 +23,26 @@ const roleBtns = document.querySelectorAll(".role-btn");
 const roleHint = document.getElementById("roleHint");
 const submitBtn = document.getElementById("submitBtn");
 const googleBtn = document.getElementById("googleBtn");
+const microsoftBtn = document.getElementById("microsoftBtn");
 
-// customer developer logic 
+// CUSTOMER / DEVELOPER BUTTON TOGGLE LOGIC FOR LOGIN
 if (roleBtns.length > 0) {
   roleBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      // Remove active class from all role buttons
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
       roleBtns.forEach((b) => {
         b.classList.remove("active");
         b.setAttribute("aria-pressed", "false");
       });
 
-      // Add active class to the clicked button
       btn.classList.add("active");
       btn.setAttribute("aria-pressed", "true");
 
-      // Update hidden input value ('customer' or 'developer')
       const selectedRole = btn.getAttribute("data-role");
       if (accountTypeInput) {
         accountTypeInput.value = selectedRole;
       }
 
-      // Update helper text and action button name dynamically
       if (selectedRole === "customer") {
         if (roleHint) roleHint.textContent = "Customers can request services and track orders.";
         if (submitBtn) submitBtn.textContent = "Login as Customer";
@@ -56,8 +54,7 @@ if (roleBtns.length > 0) {
   });
 }
 
-
-// Form Submit - Email & Password Sign In
+// standard email/password login form submission logic
 if (loginForm) {
   loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -74,10 +71,11 @@ if (loginForm) {
     loginMessage.style.color = "orange";
     loginMessage.textContent = "Logging in...";
 
+    // 1. Authenticate credentials via Firebase Auth
     auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        // Fetch user data from the "users" collection
+        // 2. Fetch the logged in user profile document from Firestore 'users' collection
         return db.collection("users").doc(user.uid).get();
       })
       .then((doc) => {
@@ -86,13 +84,17 @@ if (loginForm) {
           loginMessage.style.color = "green";
           loginMessage.textContent = `Welcome back, ${userData.fullName || 'User'}! Redirecting...`;
 
-          // Redirect to home.html since login is now the main landing page (index.html)
+          // 💡 3. DYNAMIC REDIRECT CHECK: Read the role saved in database and send to correct dashboard
           setTimeout(() => {
-            window.location.href = "home.html"; 
+            if (userData.role === "developer") {
+              window.location.href = "developer-dashboard.html"; // Developer Dashboard එකට
+            } else {
+              window.location.href = "customer-dashboard.html"; // Customer Dashboard එකට
+            }
           }, 1500);
         } else {
           loginMessage.style.color = "red";
-          loginMessage.textContent = "User role data not found.";
+          loginMessage.textContent = "User role data not found in database.";
         }
       })
       .catch((error) => {
@@ -107,12 +109,10 @@ if (loginForm) {
   });
 }
 
-// Google Login Logic (Popup Method with Multiple Overlay Request Fix)
+// google login button click logic
 if (googleBtn) {
   googleBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    
-    // Disable the button to prevent multiple concurrent popup overlay requests
     googleBtn.disabled = true;
 
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -120,100 +120,90 @@ if (googleBtn) {
     auth.signInWithPopup(provider)
       .then((result) => {
         const user = result.user;
-        
-        // Fetch or establish user profile record in Firestore
         return db.collection("users").doc(user.uid).get().then((doc) => {
             if (!doc.exists) {
-                // If it's a first-time Google sign-in, default role to 'customer'
+                const chosenRole = accountTypeInput ? accountTypeInput.value : "customer";
                 return db.collection("users").doc(user.uid).set({
                     fullName: user.displayName,
                     email: user.email,
-                    role: "customer",
+                    role: chosenRole,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    return db.collection("users").doc(user.uid).get();
-                });
+                }).then(() => { return db.collection("users").doc(user.uid).get(); });
             }
             return doc;
         });
       })
       .then((doc) => {
         if (doc && doc.exists) {
+          const userData = doc.data();
           loginMessage.style.color = "green";
           loginMessage.textContent = "Google Login Successful! Redirecting...";
           
-          // Redirect to home.html after successful Google authentication
+          // 💡 DYNAMIC REDIRECT CHECK: For Google Users
           setTimeout(() => {
-              window.location.href = "home.html"; 
+            if (userData.role === "developer") {
+              window.location.href = "developer-dashboard.html";
+            } else {
+              window.location.href = "customer-dashboard.html";
+            }
           }, 1500);
         }
       })
       .catch((error) => {
         console.error("Google Auth Error:", error);
-        // Re-enable button on error so user can attempt to click again
         googleBtn.disabled = false;
-        
         if (error.code !== "auth/popup-closed-by-user") {
           alert("Google Login failed: " + error.message);
         }
       });
   });
 }
-// Inside your login/login.js file
 
-// HTML Microsoft Button Element
-const microsoftBtn = document.getElementById("microsoftBtn");
-
-// Microsoft Login Logic (OAuth Popup Method)
+// microsoft login button click logic
 if (microsoftBtn) {
   microsoftBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    
-    // Disable button state to prevent multiple popup overlays
     microsoftBtn.disabled = true;
 
-    // Create Firebase Microsoft Auth Provider instance
     const provider = new firebase.auth.OAuthProvider('microsoft.com');
-
-    // Custom scopes can be added if you need additional profile data
     provider.addScope('mail.read');
     provider.addScope('user.read');
 
     auth.signInWithPopup(provider)
       .then((result) => {
         const user = result.user;
-        
-        // Establish or check user profile record inside Firestore database
         return db.collection("users").doc(user.uid).get().then((doc) => {
             if (!doc.exists) {
-                // Provision new Microsoft account user as a 'customer' by default
+                const chosenRole = accountTypeInput ? accountTypeInput.value : "customer";
                 return db.collection("users").doc(user.uid).set({
                     fullName: user.displayName || "Microsoft User",
                     email: user.email,
-                    role: "customer",
+                    role: chosenRole,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    return db.collection("users").doc(user.uid).get();
-                });
+                }).then(() => { return db.collection("users").doc(user.uid).get(); });
             }
             return doc;
         });
       })
       .then((doc) => {
         if (doc && doc.exists) {
+          const userData = doc.data();
           loginMessage.style.color = "green";
           loginMessage.textContent = "Microsoft Login Successful! Redirecting...";
           
-          // Route user directly to workspace dashboard home
+          // 💡 DYNAMIC REDIRECT CHECK: For Microsoft Users
           setTimeout(() => {
-              window.location.href = "home.html"; 
+            if (userData.role === "developer") {
+              window.location.href = "developer-dashboard.html";
+            } else {
+              window.location.href = "customer-dashboard.html";
+            }
           }, 1500);
         }
       })
       .catch((error) => {
         console.error("Microsoft Auth Error:", error);
-        microsoftBtn.disabled = false; // Re-enable button on failure
-        
+        microsoftBtn.disabled = false;
         if (error.code !== "auth/popup-closed-by-user") {
           alert("Microsoft Login failed: " + error.message);
         }
