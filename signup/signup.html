@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign up - MicroMate</title>
     <script>
+        // Check and apply the saved theme before the page renders
         (function () {
             try {
                 var savedTheme = localStorage.getItem("micromateTheme");
@@ -41,7 +42,7 @@
         <div class="login-card">
             <div class="login-form-section">
                 <h2>Create your account</h2>
-                <p class="subtitle">Already have an account?</p>
+                <p class="subtitle">Already have an account? <a href="../index.html">Login</a></p>
 
                 <form id="signupForm" novalidate>
                     <input id="accountType" name="accountType" type="hidden" value="customer" />
@@ -76,13 +77,14 @@
                         <span>or</span>
                     </div>
 
-                   <div class="social-login">
-                      <button type="button" id="googleBtn" class="social-btn" aria-label="Continue with Google">
-                         <i class="fa-brands fa-google"></i>
-                      </button>
-                     <button type="button" class="social-btn" aria-label="Continue with email">
-                         <i class="fas fa-envelope"></i>
-                     </button>
+                    <div class="social-login">
+                        <button type="button" id="googleBtn" class="social-btn" aria-label="Continue with Google">
+                             <i class="fa-brands fa-google"></i>
+                        </button>
+   
+                        <button type="button" id="microsoftBtn" class="social-btn" aria-label="Continue with Microsoft">
+                             <i class="fa-brands fa-microsoft" style="color: #f25022;"></i>
+                        </button>
                     </div>
 
                     <p class="terms">

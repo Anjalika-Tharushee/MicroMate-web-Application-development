@@ -162,3 +162,206 @@ if (googleBtn) {
       });
   });
 }
+
+// 1. Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDIrpzFWq5SMUaVIhdVC9mV9Uq5ORiIT_k",
+  authDomain: "micromate-25a16.firebaseapp.com",
+  projectId: "micromate-25a16",
+  storageBucket: "micromate-25a16.firebasestorage.app",
+  messagingSenderId: "297225820043",
+  appId: "1:297225820043:web:6f9d5c3d81be425b03818e"
+};
+
+// Initialize Firebase if not already initialized
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// HTML Elements
+const signupForm = document.getElementById("signupForm");
+const signupMessage = document.getElementById("signupMessage");
+const accountTypeInput = document.getElementById("accountType");
+const roleBtns = document.querySelectorAll(".role-btn");
+const roleHint = document.getElementById("roleHint");
+const submitBtn = document.getElementById("submitBtn");
+const googleBtn = document.getElementById("googleBtn");
+const microsoftBtn = document.getElementById("microsoftBtn"); // 💡 Added Microsoft Button Element
+
+// ========================================================
+// 💡 CUSTOMER / DEVELOPER BUTTON TOGGLE LOGIC FOR SIGNUP
+// ========================================================
+if (roleBtns.length > 0) {
+  roleBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      roleBtns.forEach((b) => {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+      });
+
+      btn.classList.add("active");
+      btn.setAttribute("aria-pressed", "true");
+
+      const selectedRole = btn.getAttribute("data-role");
+      if (accountTypeInput) {
+        accountTypeInput.value = selectedRole;
+      }
+
+      if (selectedRole === "customer") {
+        if (roleHint) roleHint.textContent = "Customers can request services and manage orders.";
+        if (submitBtn) submitBtn.textContent = "Create Customer Account";
+      } else {
+        if (roleHint) roleHint.textContent = "Developers can offer services and view customer requests.";
+        if (submitBtn) submitBtn.textContent = "Create Developer Account";
+      }
+    });
+  });
+}
+// ========================================================
+
+// Form Submit - Standard Email & Password Sign Up
+if (signupForm) {
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const fullName = signupForm.fullName.value.trim();
+    const email = signupForm.email.value.trim();
+    const password = signupForm.password.value;
+    const confirmPassword = signupForm.confirmPassword.value;
+    const role = accountTypeInput ? accountTypeInput.value : "customer"; 
+
+    if (password !== confirmPassword) {
+      signupMessage.style.color = "red";
+      signupMessage.textContent = "Passwords do not match!";
+      return;
+    }
+
+    if (password.length < 6) {
+      signupMessage.style.color = "red";
+      signupMessage.textContent = "Password should be at least 6 characters.";
+      return;
+    }
+
+    signupMessage.style.color = "orange";
+    signupMessage.textContent = "Creating account...";
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        // Store structured profile metadata parameters inside Firestore database records
+        return db.collection("users").doc(user.uid).set({
+          fullName: fullName,
+          email: email,
+          role: role, 
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      })
+      .then(() => {
+        signupMessage.style.color = "green";
+        signupMessage.textContent = "Account created successfully! Redirecting to login...";
+        signupForm.reset();
+        
+        // Redirect back to the landing registration gateway loop (index.html)
+        setTimeout(() => {
+          window.location.href = "../index.html"; 
+        }, 2000);
+      })
+      .catch((error) => {
+        console.error("Signup Error:", error);
+        signupMessage.style.color = "red";
+        if (error.code === "auth/email-already-in-use") {
+          signupMessage.textContent = "The email address is already in use by another account.";
+        } else {
+          signupMessage.textContent = error.message;
+        }
+      });
+  });
+}
+
+// Federated Google Sign-Up Logic Flow Wrapper
+if (googleBtn) {
+  googleBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    googleBtn.disabled = true;
+
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        const role = accountTypeInput ? accountTypeInput.value : "customer"; 
+
+        return db.collection("users").doc(user.uid).get().then((doc) => {
+            if (!doc.exists) {
+                return db.collection("users").doc(user.uid).set({
+                    fullName: user.displayName,
+                    email: user.email,
+                    role: role,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        });
+      })
+      .then(() => {
+        signupMessage.style.color = "green";
+        signupMessage.textContent = "Google Sign-Up Successful! Redirecting...";
+        
+        setTimeout(() => {
+            window.location.href = "../home.html"; 
+        }, 1500);
+      })
+      .catch((error) => {
+        console.error("Google Auth Error:", error);
+        googleBtn.disabled = false;
+        if (error.code !== "auth/popup-closed-by-user") {
+          alert("Google Sign-In failed: " + error.message);
+        }
+      });
+  });
+}
+
+// 💡 NEW: Federated Microsoft Sign-Up Logic Flow Wrapper
+if (microsoftBtn) {
+  microsoftBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    microsoftBtn.disabled = true;
+
+    const provider = new firebase.auth.OAuthProvider('microsoft.com');
+    provider.addScope('mail.read');
+    provider.addScope('user.read');
+
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        const role = accountTypeInput ? accountTypeInput.value : "customer"; 
+
+        return db.collection("users").doc(user.uid).get().then((doc) => {
+            if (!doc.exists) {
+                return db.collection("users").doc(user.uid).set({
+                    fullName: user.displayName || "Microsoft User",
+                    email: user.email,
+                    role: role,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        });
+      })
+      .then(() => {
+        signupMessage.style.color = "green";
+        signupMessage.textContent = "Microsoft Sign-Up Successful! Redirecting...";
+        
+        setTimeout(() => {
+            window.location.href = "../home.html"; 
+        }, 1500);
+      })
+      .catch((error) => {
+        console.error("Microsoft Auth Error:", error);
+        microsoftBtn.disabled = false;
+        if (error.code !== "auth/popup-closed-by-user") {
+          alert("Microsoft Sign-In failed: " + error.message);
+        }
+      });
+  });
+}

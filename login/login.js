@@ -159,3 +159,64 @@ if (googleBtn) {
       });
   });
 }
+// Inside your login/login.js file
+
+// HTML Microsoft Button Element
+const microsoftBtn = document.getElementById("microsoftBtn");
+
+// Microsoft Login Logic (OAuth Popup Method)
+if (microsoftBtn) {
+  microsoftBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    
+    // Disable button state to prevent multiple popup overlays
+    microsoftBtn.disabled = true;
+
+    // Create Firebase Microsoft Auth Provider instance
+    const provider = new firebase.auth.OAuthProvider('microsoft.com');
+
+    // Custom scopes can be added if you need additional profile data
+    provider.addScope('mail.read');
+    provider.addScope('user.read');
+
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        
+        // Establish or check user profile record inside Firestore database
+        return db.collection("users").doc(user.uid).get().then((doc) => {
+            if (!doc.exists) {
+                // Provision new Microsoft account user as a 'customer' by default
+                return db.collection("users").doc(user.uid).set({
+                    fullName: user.displayName || "Microsoft User",
+                    email: user.email,
+                    role: "customer",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    return db.collection("users").doc(user.uid).get();
+                });
+            }
+            return doc;
+        });
+      })
+      .then((doc) => {
+        if (doc && doc.exists) {
+          loginMessage.style.color = "green";
+          loginMessage.textContent = "Microsoft Login Successful! Redirecting...";
+          
+          // Route user directly to workspace dashboard home
+          setTimeout(() => {
+              window.location.href = "home.html"; 
+          }, 1500);
+        }
+      })
+      .catch((error) => {
+        console.error("Microsoft Auth Error:", error);
+        microsoftBtn.disabled = false; // Re-enable button on failure
+        
+        if (error.code !== "auth/popup-closed-by-user") {
+          alert("Microsoft Login failed: " + error.message);
+        }
+      });
+  });
+}
