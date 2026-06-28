@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Service - MicroMate</title>
+    <script>
+        (function () {
+            try {
+                var savedTheme = localStorage.getItem("micromateTheme");
+                if (savedTheme === "light" || savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", savedTheme);
+                }
+            } catch (error) { }
+        })();
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 6rem auto 4rem;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+        html[data-theme="dark"] .form-container {
+            background: rgba(15, 23, 42, 0.78);
+        }
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .input-group label {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .input-group input, .input-group textarea, .input-group select {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            font-size: 1rem;
+        }
+        .btn-submit {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo.png" alt="MicroMate Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="developer-dashboard.html">Developer Console</a></li>
+                <li><a href="add_service.html" class="active">Offer a Service</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <h2>Offer a New Service Gig 🚀</h2>
+            <p style="color: var(--text-muted); margin-bottom: 25px;">Create a professional gig to show customers what services you can provide.</p>
+            
+            <form id="serviceForm" novalidate>
+                <div class="input-group">
+                    <label for="serviceTitle">Service Title (What will you do?):</label>
+                    <input type="text" id="serviceTitle" placeholder="e.g., I will build a responsive React landing page" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="serviceCategory">Category:</label>
+                    <select id="serviceCategory" required>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Mobile Apps (Flutter/Java)">Mobile Apps (Flutter/Java)</option>
+                        <option value="UI/UX Design (Figma)">UI/UX Design (Figma)</option>
+                        <option value="Database & Backend">Database & Backend</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="servicePrice">Starting Price (Rs.):</label>
+                    <input type="number" id="servicePrice" placeholder="e.g., 5000" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="serviceDetails">Service Description:</label>
+                    <textarea id="serviceDetails" rows="5" placeholder="Describe your expertise, technologies used, and what deliverables the client will get..." required></textarea>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-submit">Publish Service Gig</button>
+                <p id="responseMessage" style="text-align: center; margin-top: 15px; font-weight: 500;"></p>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script src="add_service.js"></script>
+</body>
+</html> 
