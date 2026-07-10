@@ -224,12 +224,12 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
 .categories {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
     padding: 50px 0;
 }
 
 .cat-card {
-    width: 100px;
+    width: 150px;
     height: 120px;
     background: var(--surface);
     border-radius: 10px;
@@ -237,6 +237,8 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
     align-items: center;
     justify-content: center;
     box-shadow: var(--shadow);
-    font-size: 2rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-soft);
 }
