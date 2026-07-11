@@ -98,7 +98,8 @@ function loadCustomerRequests() {
                         
                         <hr style="border: 0; border-top: 1px solid var(--border); margin: 5px 0;">
                         
-                        <!-- 💡 FIXED HREF: Now links to target text layout inside Gmail web framework securely -->
+                        
+                        <!-- FIXED HREF: Now links to target text layout inside Gmail web framework securely -->
                         <a href="${gmailWebUrl}" target="_blank" class="btn-primary" style="text-decoration: none; text-align: center; padding: 12px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; background: #2563eb; color: white; display: block; transition: background 0.2s;">Apply & Contact Client</a>
                     </div>
                 `;
