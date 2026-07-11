@@ -2,6 +2,7 @@
 const requestsGrid = document.getElementById("requestsGrid");
 const loadingRequests = document.getElementById("loadingRequests");
 const developerName = document.getElementById("developerName");
+const statGigs = document.getElementById("statGigs"); // 💡 Capture the new Gigs Counter element
 
 // Verify login and double-check user role boundary conditions
 auth.onAuthStateChanged((user) => {
@@ -11,7 +12,8 @@ auth.onAuthStateChanged((user) => {
             .then((doc) => {
                 if (doc.exists && doc.data().role === "developer") {
                     developerName.textContent = doc.data().fullName || "Developer";
-                    loadCustomerRequests(); // 💡 Trigger unified data loading function
+                    loadCustomerRequests(); // Trigger unified data loading function
+                    updateDeveloperStats(user.uid); // 💡 Trigger dynamic stats updates
                 } else if (doc.exists && doc.data().role === "customer") {
                     // Security fallback: If a customer tries to sneak in, redirect them immediately
                     window.location.href = "customer-dashboard.html";
@@ -26,9 +28,27 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
+// 💡 New Function: Fetch and update stats metrics dynamically from Firestore
+function updateDeveloperStats(developerId) {
+    if (!statGigs) return;
+
+    // Query 'services' collection to count total gigs matching current developer's ID
+    db.collection("services")
+        .where("developerId", "==", developerId)
+        .get()
+        .then((querySnapshot) => {
+            // Update the HTML text content with total number of documents returned
+            statGigs.textContent = querySnapshot.size;
+        })
+        .catch((error) => {
+            console.error("Error calculating developer statistics context:", error);
+            statGigs.textContent = "-";
+        });
+}
+
 // Fetch all project inquiries posted by customers via unified "requests" collection
 function loadCustomerRequests() {
-    // 💡 FIXED: Unified mapping to look into "requests" ordered by newest timestamp
+    // Unified mapping to look into "requests" ordered by newest timestamp
     db.collection("requests")
         .orderBy("timestamp", "desc")
         .get()

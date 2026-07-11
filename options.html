@@ -27,37 +27,41 @@
                 <img src="images/logo.png" alt="MicroMate Logo">
             </div>
             <ul class="nav-links">
-                <li><a href="customer-dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="customer-dashboard.html">Dashboard</a></li>
                 <li><a href="home.html">Home</a></li>
                 <li><a href="post-request/post-request.html">Post Request</a></li>
                 <li><a href="how-it-works.html">How it works</a></li>
                 <li><a href="options.html" class="active">Options</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
             </ul>
-           
         </nav>
     </header>
 
     <main>
+        <!-- 💡 Customer Requests Display Section -->
         <section class="messages-section" style="max-width: 1000px; margin: 4rem auto; padding: 0 5%;">
-              <h2>Customer Inquiries & Messages</h2>
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Below are the messages submitted by customers via the Contact Us page.</p>
+            <h2>Customer Inquiries & Requests</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Below are the live project requests submitted by customers on the platform.</p>
     
-               <div id="loadingStatus" style="font-weight: 500; color: orange; margin-bottom: 10px;">Loading messages...</div>
+            <div id="loadingStatus" style="font-weight: 500; color: orange; margin-bottom: 10px;">Loading messages...</div>
 
-                 <table id="messagesTable" style="width: 100%; border-collapse: collapse; display: none; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden;">
-                   <thead>
-                     <tr style="background: var(--primary); color: white; text-align: left;">
-                        <th style="padding: 12px;">Name</th>
-                       <th style="padding: 12px;">Email</th>
-                       <th style="padding: 12px;">Message</th>
-                       <th style="padding: 12px;">Received Date</th>
-                     </tr>
-                   </thead>
-                  <tbody id="messagesTableBody">
-                 </tbody>
-               </table>
+            <!-- table view massage in fire base -->
+            <table id="messagesTable" style="width: 100%; border-collapse: collapse; display: none; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; margin-top: 15px;">
+                <thead>
+                    <tr style="background: #2563eb; color: white; text-align: left;">
+                        <th style="padding: 12px;">Project Title</th>
+                        <th style="padding: 12px;">Category</th>
+                        <th style="padding: 12px;">Budget</th>
+                        <th style="padding: 12px;">Client Details</th>
+                        <th style="padding: 12px;">Deadline</th>
+                    </tr>
+                </thead>
+                <tbody id="messagesTableBody">
+                    <!-- Data rows will be dynamically injected here via JS -->
+                </tbody>
+            </table>
         </section>
+
         <section class="options-hero">
             <p class="eyebrow">Options</p>
             <h1>Choose the kind of help you need and move faster from idea to finished work.</h1>
@@ -117,18 +121,13 @@
         </section>
     </main>
 
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
-    <script src="theme.js"></script>
-    <script src="app.js"></script>
-
-   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
+    <script src="theme.js"></script>
     <script src="auth-status.js"></script>
-
-    <script src="view-messages.js"></script>
+    <script src="view-messages.js"></script> <!-- 💡 Dynamic Script Handler -->
 </body>
 </html>

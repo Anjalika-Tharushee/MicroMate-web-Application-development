@@ -1,84 +1,94 @@
-// HTML Dashboard Table Elements
+// Inside main folder -> view-messages.js
+
+// Firebase Initialization check
+if (!firebase.apps.length) {
+    const firebaseConfig = {
+      apiKey: "AIzaSyDIrpzFWq5SMUaVIhdVC9mV9Uq5ORiIT_k",
+      authDomain: "micromate-25a16.firebaseapp.com",
+      projectId: "micromate-25a16",
+      storageBucket: "micromate-25a16.firebasestorage.app",
+      messagingSenderId: "297225820043",
+      appId: "1:297225820043:web:6f9d5c3d81be425b03818e"
+    };
+    firebase.initializeApp(firebaseConfig);
+}
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Capture UI DOM Elements
+const loadingStatus = document.getElementById("loadingStatus");
 const messagesTable = document.getElementById("messagesTable");
 const messagesTableBody = document.getElementById("messagesTableBody");
-const loadingStatus = document.getElementById("loadingStatus");
 
-// 💡 Auth Listeners: Uses the globally initialized 'auth' and 'db' from auth-status.js
+// 1. Preserve your Card Click Option Router Matrix
+const optionCards = document.querySelectorAll(".option-card");
+optionCards.forEach((card) => {
+  card.addEventListener("click", (event) => {
+    if (event.target.closest("a")) {
+      return;
+    }
+    const requestLink = card.querySelector("a[href*='post-request/post-request.html']");
+    if (requestLink) {
+      window.location.href = requestLink.href;
+    }
+  });
+});
+
+// 2. Fetch data from Firebase 'requests' collection on login authorization state change
 auth.onAuthStateChanged((user) => {
     if (user) {
-        console.log("Logged in user UID:", user.uid);
-        
-        // Fetch current user document meta from Firestore users collection
-        db.collection("users").doc(user.uid).get()
-            .then((doc) => {
-                if (doc.exists) {
-                    const userData = doc.data();
-                    console.log("User role verified:", userData.role);
-
-                    // Allow access ONLY if the structural account role is 'developer'
-                    if (userData.role === "developer") {
-                        fetchCustomerMessages();
-                    } else {
-                        // --- USER IS A CUSTOMER: Access Denied to sensitive developer database logs ---
-                        loadingStatus.style.color = "red";
-                        loadingStatus.textContent = "Access Denied! Only registered Developers can view these messages.";
-                    }
-                } else {
-                    loadingStatus.style.color = "red";
-                    loadingStatus.textContent = "User profile record not found in database.";
-                }
-            })
-            .catch((error) => {
-                console.error("Authorization check failure:", error);
-                loadingStatus.textContent = "Error verifying security permissions.";
-            });
+        loadTableInquiries();
     } else {
-        // Handled globally by auth-status.js router rules
-        loadingStatus.textContent = "Please sign in to fetch messages.";
+        // Fallback guard mechanism
+        if (loadingStatus) loadingStatus.textContent = "Please login to view active requests.";
     }
 });
 
-// Fetch all input records from the "contact_messages" collection
-function fetchCustomerMessages() {
-    // 💡 REMOVED .orderBy() momentarily to guarantee immediate data fetching without requiring Firestore Custom Indexes
-    db.collection("contact_messages").get()
+function loadTableInquiries() {
+    // 💡 Fetching from unified 'requests' collection
+    db.collection("requests")
+        .orderBy("timestamp", "desc")
+        .get()
         .then((querySnapshot) => {
-            // Clear current loading notification engine state
-            loadingStatus.style.display = "none";
-            messagesTableBody.innerHTML = ""; // Clear old visual table cache
+            if (loadingStatus) loadingStatus.style.display = "none";
 
             if (querySnapshot.empty) {
-                loadingStatus.style.display = "block";
-                loadingStatus.style.color = "var(--text-muted)";
-                loadingStatus.textContent = "No messages found in the database directory.";
+                if (loadingStatus) {
+                    loadingStatus.style.display = "block";
+                    loadingStatus.style.color = "gray";
+                    loadingStatus.textContent = "No active customer requests found.";
+                }
                 return;
             }
 
-            // Render table grid layouts
-            messagesTable.style.display = "table";
+            // Expose table grid layout frame
+            if (messagesTable) messagesTable.style.display = "table";
+            if (messagesTableBody) messagesTableBody.innerHTML = ""; 
 
-            // Loop through each document and append data structure elements to HTML view
+            // Inject Firebase documents parameters inside table records structurally
             querySnapshot.forEach((doc) => {
-                const data = doc.data();
+                const req = doc.data();
                 
-                // Formulate legible localized timestamp strings safely
-                const dateString = data.timestamp ? data.timestamp.toDate().toLocaleString() : "Just now";
-
-                // Construct clean table rows string buffers safely
-                const rowHTML = `
-                    <tr style="border-bottom: 1px solid var(--border); text-align: left;">
-                        <td style="padding: 12px; font-weight: 500; color: var(--text);">${data.name || 'Anonymous'}</td>
-                        <td style="padding: 12px;"><a href="mailto:${data.email}" style="color: #3b82f6; text-decoration: none;">${data.email || 'N/A'}</a></td>
-                        <td style="padding: 12px; max-width: 400px; word-wrap: break-word; color: var(--text);">${data.message || ''}</td>
-                        <td style="padding: 12px; color: var(--text-muted); font-size: 0.9rem;">${dateString}</td>
+                const trHTML = `
+                    <tr style="border-bottom: 1px solid var(--border); transition: background 0.2s;">
+                        <td style="padding: 12px; font-weight: 600; color: #3b82f6;">${req.title}</td>
+                        <td style="padding: 12px;"><span style="background: rgba(59, 130, 246, 0.1); color: #3b82f6; padding: 4px 8px; border-radius: 6px; font-size: 0.85rem;">${req.category}</span></td>
+                        <td style="padding: 12px; font-weight: 700; color: #10b981;">Rs. ${req.budget}</td>
+                        <td style="padding: 12px; font-size: 0.9rem;">
+                            <strong>${req.contactName}</strong><br>
+                            <a href="mailto:${req.contactEmail}" style="color: gray; font-size: 0.8rem;">${req.contactEmail}</a>
+                        </td>
+                        <td style="padding: 12px; font-size: 0.9rem; color: #ef4444; font-weight: 500;">${req.deadline}</td>
                     </tr>
                 `;
-                messagesTableBody.innerHTML += rowHTML;
+                if (messagesTableBody) messagesTableBody.innerHTML += trHTML;
             });
         })
         .catch((error) => {
-            console.error("Firestore message retrieval error:", error);
-            loadingStatus.style.color = "red";
-            loadingStatus.textContent = "Failed to load database logs: " + error.message;
+            console.error("Error synchronizing customer data rows:", error);
+            if (loadingStatus) {
+                loadingStatus.style.color = "red";
+                loadingStatus.textContent = "Error reading data records from database server.";
+            }
         });
 }
