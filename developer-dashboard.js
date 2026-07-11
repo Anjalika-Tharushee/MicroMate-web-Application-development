@@ -2,7 +2,7 @@
 const requestsGrid = document.getElementById("requestsGrid");
 const loadingRequests = document.getElementById("loadingRequests");
 const developerName = document.getElementById("developerName");
-const statGigs = document.getElementById("statGigs"); // 💡 Capture the new Gigs Counter element
+const statGigs = document.getElementById("statGigs"); // Capture the new Gigs Counter element
 
 // Verify login and double-check user role boundary conditions
 auth.onAuthStateChanged((user) => {
@@ -13,7 +13,7 @@ auth.onAuthStateChanged((user) => {
                 if (doc.exists && doc.data().role === "developer") {
                     developerName.textContent = doc.data().fullName || "Developer";
                     loadCustomerRequests(); // Trigger unified data loading function
-                    updateDeveloperStats(user.uid); // 💡 Trigger dynamic stats updates
+                    updateDeveloperStats(user.uid); // Trigger dynamic stats updates
                 } else if (doc.exists && doc.data().role === "customer") {
                     // Security fallback: If a customer tries to sneak in, redirect them immediately
                     window.location.href = "customer-dashboard.html";
@@ -28,7 +28,7 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
-// 💡 New Function: Fetch and update stats metrics dynamically from Firestore
+// Fetch and update stats metrics dynamically from Firestore
 function updateDeveloperStats(developerId) {
     if (!statGigs) return;
 
@@ -70,6 +70,10 @@ function loadCustomerRequests() {
                 // Formulate legible dates from object elements safely
                 const dateString = req.timestamp ? req.timestamp.toDate().toLocaleDateString() : "Recent";
                 
+                // 💡 SOLVED: Constructing a direct web Gmail URL with encoded parameters to prevent browser freezing
+                const emailSubject = encodeURIComponent(`MicroMate - Application for ${req.title}`);
+                const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${req.contactEmail}&su=${emailSubject}`;
+                
                 // Construct clean responsive grid cards layouts template injection
                 const cardHTML = `
                     <div class="request-card" style="border: 1px solid var(--border); padding: 25px; border-radius: 16px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(8px); display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow);">
@@ -94,7 +98,8 @@ function loadCustomerRequests() {
                         
                         <hr style="border: 0; border-top: 1px solid var(--border); margin: 5px 0;">
                         
-                        <a href="mailto:${req.contactEmail}" class="btn-primary" style="text-decoration: none; text-align: center; padding: 12px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; background: #2563eb; color: white; display: block; transition: background 0.2s;">Apply & Contact Client</a>
+                        <!-- 💡 FIXED HREF: Now links to target text layout inside Gmail web framework securely -->
+                        <a href="${gmailWebUrl}" target="_blank" class="btn-primary" style="text-decoration: none; text-align: center; padding: 12px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; background: #2563eb; color: white; display: block; transition: background 0.2s;">Apply & Contact Client</a>
                     </div>
                 `;
                 requestsGrid.innerHTML += cardHTML;
