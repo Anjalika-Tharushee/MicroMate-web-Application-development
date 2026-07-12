@@ -35,6 +35,22 @@ function isPublicPage(pathname) {
     return pathname.endsWith("/") || publicPages.includes(pageName);
 }
 
+function getFriendlyDisplayName(user, userData) {
+    if (userData && userData.fullName) {
+        return userData.fullName;
+    }
+
+    if (user && user.displayName) {
+        return user.displayName;
+    }
+
+    if (user && user.email) {
+        return user.email.split('@')[0];
+    }
+
+    return "User";
+}
+
 // 2. Real-time Authentication State Listener
 auth.onAuthStateChanged((user) => {
     if (user) {
@@ -47,16 +63,14 @@ auth.onAuthStateChanged((user) => {
         if (userDisplayName) {
             db.collection("users").doc(user.uid).get()
                 .then((doc) => {
-                    if (doc.exists) {
-                        const userData = doc.data();
-                        userDisplayName.textContent = `Hi, ${userData.fullName || 'User'}`;
-                    } else {
-                        userDisplayName.textContent = "Hi, User";
-                    }
+                    const userData = doc.exists ? doc.data() : {};
+                    const friendlyName = getFriendlyDisplayName(user, userData);
+                    userDisplayName.textContent = `Hi, ${friendlyName}`;
                 })
                 .catch((error) => {
                     console.error("Error fetching user data:", error);
-                    userDisplayName.textContent = "Hi, User";
+                    const fallbackName = getFriendlyDisplayName(user, null);
+                    userDisplayName.textContent = `Hi, ${fallbackName}`;
                 });
         }
     } else {
