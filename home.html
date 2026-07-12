@@ -27,10 +27,10 @@
                 <img src="images/logo.png" alt="MicroMate Logo">
             </div>
             <ul class="nav-links">
-                <li><a href="customer-dashboard.html">Dashboard</a></li>
                 <li><a href="home.html" class="active">Home</a></li>
-                <li><a href="post-request/post-request.html">Post Request</a></li>
                 <li><a href="how-it-works.html">How it works</a></li>
+                <li><a href="customer-dashboard.html">Browse Services</a></li>
+                <li><a href="post-request/post-request.html">Post Request</a></li>
                 <li><a href="options.html">Options</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
             </ul>
@@ -40,9 +40,15 @@
               <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
           </button>
 
-          <a href="login/login.html" class="btn btn-outline">Login as Customer</a>
-          <a href="signup/signup.html" class="btn btn-primary">Sign Up</a>
-          <a href="login/login.html?role=provider" class="btn btn-outline">Login as Service Provider</a>
+          <div id="customerAuthLinks" class="nav-auth-group" style="display: flex; align-items: center; gap: 10px;">
+              <a href="login/login.html" class="btn btn-outline">Login as Customer</a>
+              <a href="signup/signup.html" class="btn btn-primary">Sign Up</a>
+          </div>
+
+          <div id="providerAuthLinks" class="nav-auth-group" style="display: flex; align-items: center; gap: 10px;">
+              <a href="login/login.html?role=provider" class="btn btn-outline">Login as Service Provider</a>
+              <a href="signup/signup.html?role=provider" class="btn btn-primary">Sign Up as Service Provider</a>
+          </div>
 
            <div id="loggedInLinks" class="nav-auth-group" style="display: none; align-items: center; gap: 15px;">
               <span id="userDisplayName" style="font-weight: 600; color: var(--primary);">Loading...</span>
@@ -59,14 +65,19 @@
                 <p>Browse verified student services for Design, Coding, Tutoring, and Content work. Fast turnaround, Transparent pricing, and Secure project handoffs.</p>
                 
                 <div class="cta-group">
-                    <a href="how-it-works.html" class="btn btn-primary">Learn More</a>
+                    <a href="signup/signup.html?role=customer" class="btn btn-primary">Get Started as Customer</a>
                     <a href="signup/signup.html?role=provider" class="btn btn-primary">Get Started as Service Provider</a>
+                    <a href="how-it-works.html" class="btn btn-outline">Learn More</a>
                 </div>
 
-                <div class="search-bar">
-                    <input type="text" placeholder="Search Here">
-                    <i class="fas fa-search"></i>
-                </div>
+                <p class="provider-note">Service providers can list their skills, receive project requests, and grow their portfolio in minutes.</p>
+
+                <form id="homeSearchForm" class="search-bar">
+                    <input id="homeSearchInput" type="text" placeholder="Search for coding, design, tutoring, or content work">
+                    <button type="submit" class="search-button" aria-label="Search services">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
             </div>
 
             <div class="hero-images">
@@ -79,14 +90,13 @@
         </section>
 
         <section class="categories">
-            <div class="cat-card">Coding</div>
-            <div class="cat-card">Writing</div>
-            <div class="cat-card">Tutoring</div>
-            <div class="cat-card">Photography</div>
-            <div class="cat-card">Editing</div>
-            <div class="cat-card">Designing</div>
-            <div class="cat-card">Marketing</div>
-            
+            <a href="customer-dashboard.html?search=coding" class="cat-card">Coding</a>
+            <a href="customer-dashboard.html?search=writing" class="cat-card">Writing</a>
+            <a href="customer-dashboard.html?search=tutoring" class="cat-card">Tutoring</a>
+            <a href="customer-dashboard.html?search=photography" class="cat-card">Photography</a>
+            <a href="customer-dashboard.html?search=editing" class="cat-card">Editing</a>
+            <a href="customer-dashboard.html?search=design" class="cat-card">Designing</a>
+            <a href="customer-dashboard.html?search=marketing" class="cat-card">Marketing</a>
         </section>
     </main>
 
@@ -94,9 +104,23 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
+    <script src="theme.js"></script>
     <script src="auth-status.js"></script>
-</body>
-</body>
-</body>
+    <script>
+        const homeSearchForm = document.getElementById("homeSearchForm");
+        const homeSearchInput = document.getElementById("homeSearchInput");
+
+        if (homeSearchForm && homeSearchInput) {
+            homeSearchForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const query = homeSearchInput.value.trim();
+                if (!query) {
+                    window.location.href = "customer-dashboard.html";
+                    return;
+                }
+                window.location.href = `customer-dashboard.html?search=${encodeURIComponent(query)}`;
+            });
+        }
+    </script>
 </body>
 </html>

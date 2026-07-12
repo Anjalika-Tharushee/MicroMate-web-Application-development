@@ -17,16 +17,16 @@ const db = firebase.firestore();
 const serviceForm = document.getElementById("serviceForm");
 const responseMessage = document.getElementById("responseMessage");
 
-let currentDevName = "Developer";
+let currentDevName = "Service Provider";
 
 // Guard Rule: Check identity profile role
 auth.onAuthStateChanged((user) => {
     if (user) {
         db.collection("users").doc(user.uid).get().then((doc) => {
             if (doc.exists && doc.data().role === "developer") {
-                currentDevName = doc.data().fullName || "Developer";
+                currentDevName = doc.data().fullName || "Service Provider";
             } else {
-                alert("Access Denied! Only developers can offer services.");
+                alert("Access Denied! Only service providers can offer services.");
                 window.location.href = "customer-dashboard.html";
             }
         });

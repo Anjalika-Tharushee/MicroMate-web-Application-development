@@ -23,6 +23,58 @@
             margin: 6rem auto 4rem;
             padding: 0 5%;
         }
+        .browse-toolbar {
+            display: grid;
+            gap: 15px;
+            margin: 0 0 20px 0;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+        html[data-theme="dark"] .browse-toolbar {
+            background: rgba(15, 23, 42, 0.78);
+        }
+        .browse-search {
+            position: relative;
+        }
+        .browse-search input,
+        .browse-filters input,
+        .browse-filters select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+        .browse-search i {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        .browse-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
         .welcome-box {
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
@@ -61,11 +113,10 @@
                 <img src="images/logo.png" alt="MicroMate Logo">
             </div>
             <ul class="nav-links">
-                <li><a href="customer-dashboard.html" 
-                    >Dashboard</a></li>
                 <li><a href="home.html">Home</a></li>
-                <li><a href="post-request.html">Post Request</a></li>
                 <li><a href="how-it-works.html">How it works</a></li>
+                <li><a href="customer-dashboard.html" class="active">Browse Services</a></li>
+                <li><a href="post-request/post-request.html">Post Request</a></li>
                 <li><a href="options.html">Options</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
             </ul>
@@ -73,6 +124,17 @@
                 <button type="button" class="theme-toggle">
                     <i class="fas fa-moon moon-icon"></i>
                 </button>
+
+                <div id="customerAuthLinks" class="nav-auth-group" style="display: none; align-items: center; gap: 10px;">
+                    <a href="login/login.html" class="btn btn-outline">Login as Customer</a>
+                    <a href="signup/signup.html" class="btn btn-primary">Sign Up</a>
+                </div>
+
+                <div id="providerAuthLinks" class="nav-auth-group" style="display: flex; align-items: center; gap: 10px;">
+                    <a href="login/login.html?role=provider" class="btn btn-outline">Login as Service Provider</a>
+                    <a href="signup/signup.html?role=provider" class="btn btn-primary">Sign Up as Service Provider</a>
+                </div>
+
                 <div id="loggedInLinks" style="display: flex; align-items: center; gap: 15px;">
                     <span id="userDisplayName" style="font-weight: 600; color: var(--primary);">Customer</span>
                     <button id="logoutBtn" class="btn btn-outline" style="padding: 8px 15px;">Logout</button>
@@ -88,6 +150,33 @@
             <a href="post-request/post-request.html" class="btn btn-primary" style="background: white; color: #2563eb; display: inline-block; margin-top: 15px; text-decoration: none; padding: 10px 20px; border-radius: 10px; font-weight: 600;">Post a New Request</a>
         </div>
 
+        <div class="browse-toolbar">
+            <div class="browse-search">
+                <input id="searchInput" type="text" placeholder="Search by service title, category, or skill">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="browse-filters">
+                <select id="categoryFilter">
+                    <option value="all">All categories</option>
+                    <option value="Coding">Coding</option>
+                    <option value="Writing">Writing</option>
+                    <option value="Tutoring">Tutoring</option>
+                    <option value="Photography">Photography</option>
+                    <option value="Editing">Editing</option>
+                    <option value="Designing">Designing</option>
+                    <option value="Marketing">Marketing</option>
+                </select>
+                <input id="maxPriceFilter" type="number" placeholder="Max price">
+                <select id="sortBy">
+                    <option value="rating">Sort by rating</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="delivery">Delivery time</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="searchSummary" class="status-pill">Showing all available services</div>
         <h3>Available Service Provider Services</h3>
         <div id="loadingServices" class="status-msg">Loading available services...</div>
         
@@ -99,6 +188,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     
+    <script src="theme.js"></script>
     <script src="auth-status.js"></script>
     <script src="customer-dashboard.js"></script>
 </body>

@@ -39,6 +39,8 @@ function updateLoginRole(selectedRole) {
   }
 }
 
+const redirectTarget = new URLSearchParams(window.location.search).get("redirect");
+
 // CUSTOMER / SERVICE PROVIDER BUTTON TOGGLE LOGIC FOR LOGIN
 if (roleBtns.length > 0) {
   roleBtns.forEach((btn) => {
@@ -108,7 +110,9 @@ if (loginForm) {
 
           // 💡 3. DYNAMIC REDIRECT CHECK: Read the role saved in database and send to correct dashboard
           setTimeout(() => {
-            if (userData.role === "developer") {
+            if (redirectTarget) {
+              window.location.href = redirectTarget;
+            } else if (userData.role === "developer") {
               window.location.href = "../developer-dashboard.html"; // Developer Dashboard එකට
             } else {
               window.location.href = "../customer-dashboard.html"; // Customer Dashboard එකට
@@ -163,7 +167,9 @@ if (googleBtn) {
           
           // 💡 DYNAMIC REDIRECT CHECK: For Google Users
           setTimeout(() => {
-            if (userData.role === "developer") {
+            if (redirectTarget) {
+              window.location.href = redirectTarget;
+            } else if (userData.role === "developer") {
               window.location.href = "../developer-dashboard.html";
             } else {
               window.location.href = "../customer-dashboard.html";
@@ -215,7 +221,9 @@ if (microsoftBtn) {
           
           // 💡 DYNAMIC REDIRECT CHECK: For Microsoft Users
           setTimeout(() => {
-            if (userData.role === "developer") {
+            if (redirectTarget) {
+              window.location.href = redirectTarget;
+            } else if (userData.role === "developer") {
               window.location.href = "../developer-dashboard.html";
             } else {
               window.location.href = "../customer-dashboard.html";

@@ -16,7 +16,8 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 // HTML Navbar Elements
-const loggedOutLinks = document.getElementById("loggedOutLinks");
+const customerAuthLinks = document.getElementById("customerAuthLinks");
+const providerAuthLinks = document.getElementById("providerAuthLinks");
 const loggedInLinks = document.getElementById("loggedInLinks");
 const userDisplayName = document.getElementById("userDisplayName");
 const logoutBtn = document.getElementById("logoutBtn");
@@ -38,7 +39,8 @@ function isPublicPage(pathname) {
 auth.onAuthStateChanged((user) => {
     if (user) {
         // --- USER IS LOGGED IN ---
-        if (loggedOutLinks) loggedOutLinks.style.display = "none";
+        if (customerAuthLinks) customerAuthLinks.style.display = "none";
+        if (providerAuthLinks) providerAuthLinks.style.display = "flex";
         if (loggedInLinks) loggedInLinks.style.display = "flex";
 
         // Fetch user data from Firestore
@@ -59,16 +61,21 @@ auth.onAuthStateChanged((user) => {
         }
     } else {
         // --- USER IS NOT LOGGED IN (AUTH GUARD) ---
+        if (customerAuthLinks) customerAuthLinks.style.display = "flex";
+        if (providerAuthLinks) providerAuthLinks.style.display = "flex";
+        if (loggedInLinks) loggedInLinks.style.display = "none";
+
         // Only private pages should redirect to the login page.
         const currentPath = window.location.pathname;
+        const redirectPath = currentPath + window.location.search;
         if (!isPublicPage(currentPath)) {
             alert("Access Denied! Please sign in to view this page.");
             
             // Redirect smoothly based on directory layer depth
             if (currentPath.includes("/post-request/") || currentPath.includes("/signup/")) {
-                window.location.href = "../login/login.html";
+                window.location.href = `../login/login.html?redirect=${encodeURIComponent(redirectPath)}`;
             } else {
-                window.location.href = "login/login.html";
+                window.location.href = `login/login.html?redirect=${encodeURIComponent(redirectPath)}`;
             }
         }
     }

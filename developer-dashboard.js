@@ -11,7 +11,7 @@ auth.onAuthStateChanged((user) => {
         db.collection("users").doc(user.uid).get()
             .then((doc) => {
                 if (doc.exists && doc.data().role === "developer") {
-                    developerName.textContent = doc.data().fullName || "Developer";
+                    developerName.textContent = doc.data().fullName || "Service Provider";
                     loadCustomerRequests(); // Trigger unified data loading function
                     updateDeveloperStats(user.uid); // Trigger dynamic stats updates
                 } else if (doc.exists && doc.data().role === "customer") {

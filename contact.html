@@ -86,14 +86,34 @@
                 <img src="images/logo.png" alt="MicroMate Logo">
             </div>
             <ul class="nav-links">
-                <li><a href="customer-dashboard.html">Dashboard</a></li>
                 <li><a href="home.html">Home</a></li>
-                <li><a href="post-request/post-request.html">Post Request</a></li>
                 <li><a href="how-it-works.html">How it works</a></li>
+                <li><a href="customer-dashboard.html">Browse Services</a></li>
+                <li><a href="post-request/post-request.html">Post Request</a></li>
                 <li><a href="options.html">Options</a></li>
                 <li><a href="contact.html" class="active">Contact Us</a></li>
             </ul>
-            
+            <div class="nav-buttons">
+                <button type="button" class="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
+                    <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
+                    <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
+                </button>
+
+                <div id="customerAuthLinks" class="nav-auth-group" style="display: flex; align-items: center; gap: 10px;">
+                    <a href="login/login.html" class="btn btn-outline">Login as Customer</a>
+                    <a href="signup/signup.html" class="btn btn-primary">Sign Up</a>
+                </div>
+
+                <div id="providerAuthLinks" class="nav-auth-group" style="display: flex; align-items: center; gap: 10px;">
+                    <a href="login/login.html?role=provider" class="btn btn-outline">Login as Service Provider</a>
+                    <a href="signup/signup.html?role=provider" class="btn btn-primary">Sign Up as Service Provider</a>
+                </div>
+
+                <div id="loggedInLinks" class="nav-auth-group" style="display: none; align-items: center; gap: 15px;">
+                    <span id="userDisplayName" style="font-weight: 600; color: var(--primary);">Loading...</span>
+                    <button id="logoutBtn" class="btn btn-outline" style="cursor: pointer; padding: 8px 15px;">Logout</button>
+                </div>
+            </div>
         </nav>
     </header>
 
@@ -124,6 +144,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="theme.js"></script>
     <script src="auth-status.js"></script>
     <script src="contact.js"></script>
 </body>

@@ -125,7 +125,8 @@ if (signupForm) {
         
         // Form redirection sequence pipeline down to identity gateway checkpoint
         setTimeout(() => {
-          window.location.href = "../login/login.html";
+          const nextPage = role === "developer" ? "../developer-dashboard.html" : "../customer-dashboard.html";
+          window.location.href = `../login/login.html?redirect=${encodeURIComponent(nextPage)}`;
         }, 2000);
       })
       .catch((error) => {

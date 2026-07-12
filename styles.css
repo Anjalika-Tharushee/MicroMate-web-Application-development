@@ -44,8 +44,15 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
     padding: 1rem 5%;
     border-bottom: 2px solid var(--navbar-border);
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    backdrop-filter: blur(10px);
 }
 
 .logo {
@@ -62,15 +69,16 @@ body {
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .nav-links a {
     text-decoration: none;
     color: var(--text);
     font-size: 0.88rem;
-    font-weight: 600;
-    padding: 8px 14px;
+    font-weight: 700;
+    padding: 9px 15px;
     border-radius: 999px;
     border: 1px solid transparent;
     background: transparent;
@@ -93,6 +101,15 @@ body {
     display: flex;
     gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.nav-auth-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .theme-toggle {
@@ -124,10 +141,14 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
 /* Buttons */
 .btn {
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 999px;
     text-decoration: none;
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
 }
 
 .btn-primary {
@@ -138,6 +159,7 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
 .btn-outline {
     border: 1px solid var(--primary);
     color: var(--primary);
+    background: transparent;
 }
 
 /* Hero Section */
@@ -168,8 +190,17 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
 
 .cta-group {
     display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.provider-note {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 26px;
+    max-width: 520px;
+    line-height: 1.5;
 }
 
 .search-bar {
@@ -179,7 +210,7 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
 
 .search-bar input {
     width: 100%;
-    padding: 15px 20px;
+    padding: 15px 50px 15px 20px;
     border-radius: 10px;
     border: 1px solid var(--border);
     background-color: var(--surface-alt);
@@ -187,11 +218,21 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
     font-size: 1rem;
 }
 
-.search-bar i {
+.search-bar button {
     position: absolute;
-    right: 20px;
+    right: 6px;
     top: 50%;
     transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    padding: 10px 12px;
+}
+
+.search-bar i {
+    position: static;
+    transform: none;
     color: var(--text-soft);
 }
 
@@ -241,4 +282,11 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
     font-weight: 600;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-soft);
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
