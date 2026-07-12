@@ -25,6 +25,20 @@ const submitBtn = document.getElementById("submitBtn");
 const googleBtn = document.getElementById("googleBtn");
 const microsoftBtn = document.getElementById("microsoftBtn");
 
+function updateSignupRole(selectedRole) {
+  if (accountTypeInput) {
+    accountTypeInput.value = selectedRole;
+  }
+
+  if (selectedRole === "customer") {
+    if (roleHint) roleHint.textContent = "Customers can request services and manage orders.";
+    if (submitBtn) submitBtn.textContent = "Create Customer Account";
+  } else {
+    if (roleHint) roleHint.textContent = "Service providers can offer services and view customer requests.";
+    if (submitBtn) submitBtn.textContent = "Create Service Provider Account";
+  }
+}
+
 // select logic for role selection buttons
 if (roleBtns.length > 0) {
   roleBtns.forEach((btn) => {
@@ -43,20 +57,27 @@ if (roleBtns.length > 0) {
 
       // 3. Inject selected metadata value state tracking placeholder parameter
       const selectedRole = this.getAttribute("data-role");
-      if (accountTypeInput) {
-        accountTypeInput.value = selectedRole;
-      }
-
-      // 4. Update structural contextual text instructions dynamically
-      if (selectedRole === "customer") {
-        if (roleHint) roleHint.textContent = "Customers can request services and manage orders.";
-        if (submitBtn) submitBtn.textContent = "Create Customer Account";
-      } else {
-        if (roleHint) roleHint.textContent = "Developers can offer services and view customer requests.";
-        if (submitBtn) submitBtn.textContent = "Create Developer Account";
-      }
+      updateSignupRole(selectedRole);
     });
   });
+
+  const requestedRole = new URLSearchParams(window.location.search).get("role");
+  if (requestedRole === "provider") {
+    const providerBtn = document.querySelector(".role-btn[data-role='developer']");
+    const customerBtn = document.querySelector(".role-btn[data-role='customer']");
+    if (providerBtn) {
+      roleBtns.forEach((b) => {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+      });
+      providerBtn.classList.add("active");
+      providerBtn.setAttribute("aria-pressed", "true");
+      updateSignupRole("developer");
+    }
+    if (customerBtn) {
+      customerBtn.setAttribute("aria-pressed", "false");
+    }
+  }
 }
 
 
@@ -104,7 +125,7 @@ if (signupForm) {
         
         // Form redirection sequence pipeline down to identity gateway checkpoint
         setTimeout(() => {
-          window.location.href = "../index.html"; 
+          window.location.href = "../login/login.html";
         }, 2000);
       })
       .catch((error) => {

@@ -24,7 +24,7 @@ auth.onAuthStateChanged((user) => {
             });
     } else {
         // Handled by global auth routers
-        window.location.href = "index.html";
+        window.location.href = "login/login.html";
     }
 });
 

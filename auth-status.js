@@ -21,6 +21,19 @@ const loggedInLinks = document.getElementById("loggedInLinks");
 const userDisplayName = document.getElementById("userDisplayName");
 const logoutBtn = document.getElementById("logoutBtn");
 
+function isPublicPage(pathname) {
+    const pageName = pathname.split('/').pop();
+    const publicPages = [
+        "index.html",
+        "home.html",
+        "how-it-works.html",
+        "contact.html",
+        "options.html"
+    ];
+
+    return pathname.endsWith("/") || publicPages.includes(pageName);
+}
+
 // 2. Real-time Authentication State Listener
 auth.onAuthStateChanged((user) => {
     if (user) {
@@ -46,16 +59,16 @@ auth.onAuthStateChanged((user) => {
         }
     } else {
         // --- USER IS NOT LOGGED IN (AUTH GUARD) ---
-        // If the user tries to access internal pages without logging in, boot them to index.html
+        // Only private pages should redirect to the login page.
         const currentPath = window.location.pathname;
-        if (!currentPath.endsWith("index.html") && !currentPath.endsWith("/")) {
+        if (!isPublicPage(currentPath)) {
             alert("Access Denied! Please sign in to view this page.");
             
             // Redirect smoothly based on directory layer depth
             if (currentPath.includes("/post-request/") || currentPath.includes("/signup/")) {
-                window.location.href = "../index.html";
+                window.location.href = "../login/login.html";
             } else {
-                window.location.href = "index.html";
+                window.location.href = "login/login.html";
             }
         }
     }
@@ -73,12 +86,12 @@ if (logoutBtn) {
                 // Clear any leftover local data if necessary
                 localStorage.removeItem("micromateUserToken"); 
 
-                // Dynamic routing back to the main login landing page (index.html)
+                // Dynamic routing back to the login page.
                 const currentPath = window.location.pathname;
                 if (currentPath.includes("/post-request/") || currentPath.includes("/signup/")) {
-                    window.location.href = "../index.html";
+                    window.location.href = "../login/login.html";
                 } else {
-                    window.location.href = "index.html";
+                    window.location.href = "login/login.html";
                 }
             })
             .catch((error) => {

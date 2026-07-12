@@ -41,7 +41,7 @@ if (contactForm) {
             contactSubmitBtn.disabled = false;
 
             // 💡 3. FIX: Show a clear success alert pop-up to the user before redirecting
-            alert("Thank you " + name + "! Your message has been sent successfully to MicroMate Developers.");
+            alert("Thank you " + name + "! Your message has been sent successfully to the MicroMate service providers.");
 
             // 4. Redirect the user back to the home page after they click 'OK' on the alert
             window.location.href = "home.html"; 

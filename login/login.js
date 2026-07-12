@@ -25,7 +25,21 @@ const submitBtn = document.getElementById("submitBtn");
 const googleBtn = document.getElementById("googleBtn");
 const microsoftBtn = document.getElementById("microsoftBtn");
 
-// CUSTOMER / DEVELOPER BUTTON TOGGLE LOGIC FOR LOGIN
+function updateLoginRole(selectedRole) {
+  if (accountTypeInput) {
+    accountTypeInput.value = selectedRole;
+  }
+
+  if (selectedRole === "customer") {
+    if (roleHint) roleHint.textContent = "Customers can request services and track orders.";
+    if (submitBtn) submitBtn.textContent = "Login as Customer";
+  } else {
+    if (roleHint) roleHint.textContent = "Service providers can offer services and view customer requests.";
+    if (submitBtn) submitBtn.textContent = "Login as Service Provider";
+  }
+}
+
+// CUSTOMER / SERVICE PROVIDER BUTTON TOGGLE LOGIC FOR LOGIN
 if (roleBtns.length > 0) {
   roleBtns.forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -39,19 +53,27 @@ if (roleBtns.length > 0) {
       btn.setAttribute("aria-pressed", "true");
 
       const selectedRole = btn.getAttribute("data-role");
-      if (accountTypeInput) {
-        accountTypeInput.value = selectedRole;
-      }
-
-      if (selectedRole === "customer") {
-        if (roleHint) roleHint.textContent = "Customers can request services and track orders.";
-        if (submitBtn) submitBtn.textContent = "Login as Customer";
-      } else {
-        if (roleHint) roleHint.textContent = "Developers can offer services and view customer requests.";
-        if (submitBtn) submitBtn.textContent = "Login as Developer";
-      }
+      updateLoginRole(selectedRole);
     });
   });
+
+  const requestedRole = new URLSearchParams(window.location.search).get("role");
+  if (requestedRole === "provider") {
+    const providerBtn = document.querySelector(".role-btn[data-role='developer']");
+    const customerBtn = document.querySelector(".role-btn[data-role='customer']");
+    if (providerBtn) {
+      roleBtns.forEach((b) => {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+      });
+      providerBtn.classList.add("active");
+      providerBtn.setAttribute("aria-pressed", "true");
+      updateLoginRole("developer");
+    }
+    if (customerBtn) {
+      customerBtn.setAttribute("aria-pressed", "false");
+    }
+  }
 }
 
 // standard email/password login form submission logic
@@ -87,9 +109,9 @@ if (loginForm) {
           // 💡 3. DYNAMIC REDIRECT CHECK: Read the role saved in database and send to correct dashboard
           setTimeout(() => {
             if (userData.role === "developer") {
-              window.location.href = "developer-dashboard.html"; // Developer Dashboard එකට
+              window.location.href = "../developer-dashboard.html"; // Developer Dashboard එකට
             } else {
-              window.location.href = "customer-dashboard.html"; // Customer Dashboard එකට
+              window.location.href = "../customer-dashboard.html"; // Customer Dashboard එකට
             }
           }, 1500);
         } else {
@@ -142,9 +164,9 @@ if (googleBtn) {
           // 💡 DYNAMIC REDIRECT CHECK: For Google Users
           setTimeout(() => {
             if (userData.role === "developer") {
-              window.location.href = "developer-dashboard.html";
+              window.location.href = "../developer-dashboard.html";
             } else {
-              window.location.href = "customer-dashboard.html";
+              window.location.href = "../customer-dashboard.html";
             }
           }, 1500);
         }
@@ -194,9 +216,9 @@ if (microsoftBtn) {
           // 💡 DYNAMIC REDIRECT CHECK: For Microsoft Users
           setTimeout(() => {
             if (userData.role === "developer") {
-              window.location.href = "developer-dashboard.html";
+              window.location.href = "../developer-dashboard.html";
             } else {
-              window.location.href = "customer-dashboard.html";
+              window.location.href = "../customer-dashboard.html";
             }
           }, 1500);
         }

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign up - MicroMate</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MicroMate</title>
     <script>
         // Check and apply the saved theme before the page renders
         (function () {
@@ -17,11 +17,11 @@
             }
         })();
     </script>
-    <link rel="stylesheet" href="signup.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+
     <header>
         <nav class="navbar">
             <div class="logo">
@@ -33,8 +33,9 @@
                     <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
                     <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
                 </button>
-                <a href="../login/login.html" class="btn btn-outline">Login</a>
-                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+                <a href="../home.html" class="btn btn-outline">Home</a>
+                <a href="login.html" class="btn btn-outline active">Login</a>
+                <a href="../signup/signup.html" class="btn btn-primary">Sign Up</a>
             </div>
         </nav>
     </header>
@@ -42,22 +43,17 @@
     <main class="login-container">
         <div class="login-card">
             <div class="login-form-section">
-                <h2>Create your account</h2>
-                <p class="subtitle">Already have an account? <a href="../login/login.html">Login</a></p>
+                <h2>Sign in to your account</h2>
+                <p class="subtitle">Don't have an account? <a href="../signup/signup.html">Create one</a></p>
 
-                <form id="signupForm" novalidate>
+                <form id="loginForm" novalidate>
                     <input id="accountType" name="accountType" type="hidden" value="customer" />
-
-                    <div class="input-group">
-                        <label for="fullName">Full Name:</label>
-                        <input type="text" id="fullName" name="fullName" placeholder="Your full name" required>
-                    </div>
 
                     <div class="role-switch" role="tablist" aria-label="Select account type">
                         <button type="button" class="role-btn active" data-role="customer" aria-pressed="true">Customer</button>
                         <button type="button" class="role-btn" data-role="developer" aria-pressed="false">Service Provider</button>
                     </div>
-                    <p id="roleHint" class="role-hint">Customers can request services and manage orders.</p>
+                    <p id="roleHint" class="role-hint">Customers can request services and track orders.</p>
 
                     <div class="input-group">
                         <label id="emailLabel" for="email">Email:</label>
@@ -66,25 +62,28 @@
 
                     <div class="input-group">
                         <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" minlength="6" placeholder="At least 6 characters" required>
+                        <div class="password-row">
+                            <input type="password" id="password" name="password" minlength="6" required>
+                            <button id="togglePassword" class="toggle-password" type="button">Show</button>
+                        </div>
                     </div>
 
-                    <div class="input-group">
-                        <label for="confirmPassword">Confirm Password:</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" minlength="6" placeholder="Re-enter your password" required>
-                    </div>
+                    <label class="remember-row" for="rememberMe">
+                        <input id="rememberMe" name="rememberMe" type="checkbox">
+                        <span>Remember me</span>
+                    </label>
 
                     <div class="divider">
                         <span>or</span>
                     </div>
 
                     <div class="social-login">
-                        <button type="button" id="googleBtn" class="social-btn" aria-label="Continue with Google">
-                             <i class="fa-brands fa-google"></i>
-                        </button>
+                       <button type="button" id="googleBtn" class="social-btn" aria-label="Continue with Google">
+                           <i class="fa-brands fa-google"></i>
+                       </button>
    
                         <button type="button" id="microsoftBtn" class="social-btn" aria-label="Continue with Microsoft">
-                             <i class="fa-brands fa-microsoft" style="color: #f25022;"></i>
+                            <i class="fa-brands fa-microsoft" style="color: #f25022;"></i>
                         </button>
                     </div>
 
@@ -92,23 +91,18 @@
                         By joining, you agree to the MicroMate Terms of Services and to occasionally receive emails from us. Please read our Private Privacy to learn how we use your personal data.
                     </p>
 
-                    <button id="submitBtn" type="submit" class="btn-primary">Create Customer Account</button>
-                    <p id="signupMessage" class="message" aria-live="polite"></p>
+                    <button id="submitBtn" type="submit" class="btn-primary login-submit">Login as Customer</button>
+                    <p id="loginMessage" class="message" aria-live="polite"></p>
                 </form>
-
-                <p class="login-text">
-                    Already have an account?
-                    <a href="../login/login.html">Login</a>
-                </p>
             </div>
 
-            <div class="login-visual-section signup-visual-section">
+            <div class="login-visual-section">
                 <div class="visual-content">
-                    <h3>Start strong</h3>
+                    <h3>Success starts here</h3>
                     <ul>
-                        <li>Choose the right account type.</li>
-                        <li>Set up your profile in minutes.</li>
-                        <li>Access requests, services, and updates.</li>
+                        <li>Over 700 categories.</li>
+                        <li>Quality work done faster.</li>
+                        <li>Access to talent and businesses across the globe.</li>
                     </ul>
                 </div>
             </div>
@@ -120,6 +114,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <script src="../theme.js"></script>
-    <script src="signup.js"></script>
+    <script src="login.js"></script> 
 </body>
 </html>

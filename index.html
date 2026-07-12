@@ -3,116 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - MicroMate</title>
-    <script>
-        // Check and apply the saved theme before the page renders
-        (function () {
-            try {
-                var savedTheme = localStorage.getItem("micromateTheme");
-                if (savedTheme === "light" || savedTheme === "dark") {
-                    document.documentElement.setAttribute("data-theme", savedTheme);
-                }
-            } catch (error) {
-                // Ignore localStorage access issues in private browsing contexts.
-            }
-        })();
-    </script>
-    <link rel="stylesheet" href="login/login.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta http-equiv="refresh" content="0; url=home.html">
+    <title>MicroMate - Redirecting</title>
 </head>
 <body>
-
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <img src="images/logo.png" alt="MicroMate Logo">
-            </div>
-            
-            <div class="nav-buttons">
-                <button type="button" class="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
-                    <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
-                    <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
-                </button>
-                <a href="index.html" class="btn btn-outline active">Login</a>
-                <a href="signup/signup.html" class="btn btn-primary">Sign Up</a>
-            </div>
-        </nav>
-    </header>
-
-    <main class="login-container">
-        <div class="login-card">
-            <div class="login-form-section">
-                <h2>Sign in to your account</h2>
-                <p class="subtitle">Don't have an account? <a href="signup/signup.html">Create one</a></p>
-
-                <form id="loginForm" novalidate>
-                    <input id="accountType" name="accountType" type="hidden" value="customer" />
-
-                    <div class="role-switch" role="tablist" aria-label="Select account type">
-                        <button type="button" class="role-btn active" data-role="customer" aria-pressed="true">Customer</button>
-                        <button type="button" class="role-btn" data-role="developer" aria-pressed="false">Developer</button>
-                    </div>
-                    <p id="roleHint" class="role-hint">Customers can request services and track orders.</p>
-
-                    <div class="input-group">
-                        <label id="emailLabel" for="email">Email:</label>
-                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="password">Password:</label>
-                        <div class="password-row">
-                            <input type="password" id="password" name="password" minlength="6" required>
-                            <button id="togglePassword" class="toggle-password" type="button">Show</button>
-                        </div>
-                    </div>
-
-                    <label class="remember-row" for="rememberMe">
-                        <input id="rememberMe" name="rememberMe" type="checkbox">
-                        <span>Remember me</span>
-                    </label>
-
-                    <div class="divider">
-                        <span>or</span>
-                    </div>
-
-                    <div class="social-login">
-                       <button type="button" id="googleBtn" class="social-btn" aria-label="Continue with Google">
-                           <i class="fa-brands fa-google"></i>
-                       </button>
-   
-                        <button type="button" id="microsoftBtn" class="social-btn" aria-label="Continue with Microsoft">
-                            <i class="fa-brands fa-microsoft" style="color: #f25022;"></i>
-                        </button>
-                    </div>
-
-                    <p class="terms">
-                        By joining, you agree to the MicroMate Terms of Services and to occasionally receive emails from us. Please read our Private Privacy to learn how we use your personal data.
-                    </p>
-
-                    <button id="submitBtn" type="submit" class="btn-primary login-submit">Login as Customer</button>
-                    <p id="loginMessage" class="message" aria-live="polite"></p>
-                </form>
-            </div>
-
-            <div class="login-visual-section">
-                <div class="visual-content">
-                    <h3>Success starts here</h3>
-                    <ul>
-                        <li>Over 700 categories.</li>
-                        <li>Quality work done faster.</li>
-                        <li>Access to talent and businesses across the globe.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
-    <script src="theme.js"></script>
-    <script src="login/login.js"></script> 
+    <p>Opening Home...</p>
+    <script>
+        window.location.replace("home.html");
+    </script>
 </body>
 </html>

@@ -21,7 +21,7 @@ auth.onAuthStateChanged((user) => {
             });
     } else {
         // Redirect to login if not authenticated
-        window.location.href = "index.html";
+        window.location.href = "login/login.html";
     }
 });
 
