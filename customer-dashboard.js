@@ -27,7 +27,14 @@ function getExpandedSearchTerms(query) {
         photography: ["photography", "photo", "camera", "visual"],
         editing: ["editing", "edit", "video", "post", "production"],
         design: ["design", "designing", "ui", "ux", "figma", "branding"],
-        marketing: ["marketing", "seo", "social", "ads", "campaign"],
+        marketing: ["marketing", "seo", "social", "ads", "campaign", "digital"],
+        "web development": ["web", "development", "website", "landing", "frontend", "backend", "react", "html", "css", "javascript"],
+        "mobile app": ["mobile", "app", "android", "ios", "flutter", "react native", "java", "kotlin"],
+        "uiux": ["ui", "ux", "design", "figma", "prototype", "wireframe", "branding"],
+        "content writing": ["content", "writing", "copy", "article", "blog", "seo", "editorial"],
+        "video editing": ["video", "editing", "reel", "short", "promo", "production", "post"],
+        "data": ["data", "analysis", "analytics", "ai", "machine learning", "sql", "dashboard"],
+        "business": ["business", "support", "admin", "operations", "research", "documentation"],
     };
 
     const terms = query

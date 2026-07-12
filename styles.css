@@ -33,10 +33,66 @@ html[data-theme="dark"] {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: var(--bg);
     color: var(--text);
+    overflow-x: hidden;
     transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+a, button, input, select, textarea, .logo img, .cat-card, .option-card, .request-form, .preview-card, .hero-card, .login-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+}
+
+.btn,
+.theme-toggle,
+.nav-links a,
+.cat-card,
+.option-card,
+.role-btn,
+.social-btn,
+.submit-btn {
+    will-change: transform;
+}
+
+.theme-toggle:hover,
+.btn:hover,
+.nav-links a:hover,
+.cat-card:hover,
+.option-card:hover,
+.role-btn:hover,
+.social-btn:hover,
+.submit-btn:hover {
+    transform: translateY(-2px);
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-content,
+.hero-images,
+.categories,
+.cta-group,
+.search-bar,
+.option-card,
+.request-form,
+.preview-card,
+.hero-card,
+.footer-panel,
+.login-card {
+    animation: fadeUp 0.55s ease both;
 }
 
 /* Navbar */
@@ -89,6 +145,7 @@ body {
     color: var(--primary);
     border-color: var(--border);
     background: var(--surface-alt);
+    box-shadow: 0 8px 18px rgba(44, 82, 130, 0.12);
 }
 
 .nav-links a.active {
@@ -154,6 +211,7 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
 .btn-primary {
     background-color: var(--primary);
     color: white;
+    box-shadow: 0 6px 16px rgba(44, 82, 130, 0.18);
 }
 
 .btn-outline {
@@ -267,21 +325,24 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
     justify-content: center;
     gap: 30px;
     padding: 50px 0;
+    flex-wrap: wrap;
 }
 
 .cat-card {
     width: 150px;
     height: 120px;
+    padding: 12px;
     background: var(--surface);
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     box-shadow: var(--shadow);
     font-size: 1.3rem;
+    line-height: 1.2;
     font-weight: 600;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-soft);
+    text-align: center;
     text-decoration: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -289,4 +350,101 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
 .cat-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 980px) {
+    .hero {
+        flex-direction: column;
+        padding: 4rem 1.2rem;
+    }
+
+    .nav-links {
+        justify-content: center;
+    }
+
+    .nav-buttons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 720px) {
+    .navbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding-inline: 1rem;
+    }
+
+    .nav-links,
+    .nav-buttons {
+        justify-content: center;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(2rem, 8vw, 2.8rem);
+    }
+
+    .cta-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-bar {
+        max-width: none;
+    }
+
+    .img-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .img-top,
+    .img-bottom,
+    .img-side {
+        height: 220px;
+        grid-row: span 1;
+    }
+
+    .categories {
+        gap: 14px;
+        padding: 2rem 1rem;
+        flex-wrap: wrap;
+    }
+
+    .cat-card {
+        width: min(44vw, 160px);
+        height: 110px;
+    }
+}
+
+@media (max-width: 560px) {
+    .nav-links {
+        gap: 6px;
+    }
+
+    .nav-links a,
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nav-buttons {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav-auth-group {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
 }
